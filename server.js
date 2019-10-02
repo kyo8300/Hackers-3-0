@@ -29,6 +29,7 @@ app.use(passport.session());
 //Routes
 app.get('/', (req, res) => res.send('Server Running'));
 app.use('/users', require('./routes/api/users'));
+app.use('/posts', require('./routes/api/posts'));
 
 const PORT = process.env.PORT || 5000;
 
