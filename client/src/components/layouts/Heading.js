@@ -40,7 +40,11 @@ const Heading = () => {
           </NavDropdown>
         </Nav>
         <Form inline className="mr-3">
-          <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+          <FormControl
+            type="text"
+            placeholder="Search"
+            className="mr-sm-2 my-2"
+          />
           <Button variant="outline-success">Search</Button>
         </Form>
         <Nav>
@@ -48,9 +52,9 @@ const Heading = () => {
             Register
           </Link>
 
-          <Nav.Link href="#" className="mx-1">
+          <Link to="/login" className="nav-link">
             Login
-          </Nav.Link>
+          </Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

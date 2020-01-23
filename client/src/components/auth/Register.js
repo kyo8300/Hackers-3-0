@@ -71,8 +71,8 @@ const Register = () => {
         />
         <input
           type="submit"
-          name="Login"
-          value="Login"
+          name="Register"
+          value="Register"
           className="login-submit mt-4"
         />
       </form>
