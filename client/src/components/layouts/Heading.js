@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Navbar,
@@ -9,7 +9,31 @@ import {
   FormControl
 } from 'react-bootstrap';
 
-const Heading = () => {
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { logout } from '../../actions/auth';
+
+const Heading = ({ auth: { isAuthenticated, loading }, logout }) => {
+  const authLinks = (
+    <Nav>
+      <Link onClick={logout} className="nav-link">
+        Logout
+      </Link>
+    </Nav>
+  );
+
+  const guestLinks = (
+    <Nav>
+      <Link to="/register" className="nav-link">
+        Register
+      </Link>
+
+      <Link to="/login" className="nav-link">
+        Login
+      </Link>
+    </Nav>
+  );
+
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Link to="/" className="navbar-brand">
@@ -20,7 +44,7 @@ const Heading = () => {
           alt="Logo"
           class="mr-2"
         />
-        Hackers 2.0
+        Hackers 3.0
       </Link>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
@@ -47,18 +71,21 @@ const Heading = () => {
           />
           <Button variant="outline-success">Search</Button>
         </Form>
-        <Nav>
-          <Link to="/register" className="nav-link">
-            Register
-          </Link>
-
-          <Link to="/login" className="nav-link">
-            Login
-          </Link>
-        </Nav>
+        {!loading && (
+          <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
+        )}
       </Navbar.Collapse>
     </Navbar>
   );
 };
 
-export default Heading;
+Heading.propTypes = {
+  logout: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps, { logout })(Heading);

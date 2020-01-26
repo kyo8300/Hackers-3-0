@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 
-const { ensureAuthenticated } = require('../../config/auth');
+const auth = require('../../middleware/auth');
 
 const Post = require('../../models/Post');
 const User = require('../../models/User');
@@ -13,7 +13,7 @@ const User = require('../../models/User');
 router.post(
   '/',
   [
-    ensureAuthenticated,
+    auth,
     [
       check('text', 'Text is required')
         .not()
@@ -48,7 +48,7 @@ router.post(
 // @route    POST /posts
 // @desc     Get all posts
 // @access   Private
-router.get('/', ensureAuthenticated, async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const posts = await Post.find().sort({ date: -1 });
     res.json(posts);
@@ -61,7 +61,7 @@ router.get('/', ensureAuthenticated, async (req, res) => {
 // @route    GET api/posts/:id
 // @desc     Get post by ID
 // @access   Private
-router.get('/:id', ensureAuthenticated, async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -82,7 +82,7 @@ router.get('/:id', ensureAuthenticated, async (req, res) => {
 // @route    DELETE api/posts/:id
 // @desc     Delete a post
 // @access   Private
-router.delete('/:id', ensureAuthenticated, async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -110,7 +110,7 @@ router.delete('/:id', ensureAuthenticated, async (req, res) => {
 // @route    PUT api/posts/like/:id
 // @desc     Like a post
 // @access   Private
-router.put('/like/:id', ensureAuthenticated, async (req, res) => {
+router.put('/like/:id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -135,7 +135,7 @@ router.put('/like/:id', ensureAuthenticated, async (req, res) => {
 // @route    PUT api/posts/unlike/:id
 // @desc     Unlike a post
 // @access   Private
-router.put('/unlike/:id', ensureAuthenticated, async (req, res) => {
+router.put('/unlike/:id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -169,7 +169,7 @@ router.put('/unlike/:id', ensureAuthenticated, async (req, res) => {
 router.post(
   '/comment/:id',
   [
-    ensureAuthenticated,
+    auth,
     [
       check('text', 'Text is required')
         .not()
@@ -207,43 +207,39 @@ router.post(
 // @route    DELETE api/posts/comment/:id/:comment_id
 // @desc     Delete comment
 // @access   Private
-router.delete(
-  '/comment/:id/:comment_id',
-  ensureAuthenticated,
-  async (req, res) => {
-    try {
-      const post = await Post.findById(req.params.id);
+router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
 
-      // Pull out comment
-      const comment = post.comments.find(
-        comment => comment.id === req.params.comment_id
-      );
+    // Pull out comment
+    const comment = post.comments.find(
+      comment => comment.id === req.params.comment_id
+    );
 
-      // Make sure comment exists
-      if (!comment) {
-        return res.status(404).json({ msg: 'Comment does not exist' });
-      }
-
-      // Check user
-      if (comment.user.toString() !== req.user.id) {
-        return res.status(401).json({ msg: 'User not authorized' });
-      }
-
-      // Get remove index
-      const removeIndex = post.comments
-        .map(comment => comment.id)
-        .indexOf(req.params.comment_id);
-
-      post.comments.splice(removeIndex, 1);
-
-      await post.save();
-
-      res.json(post.comments);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
+    // Make sure comment exists
+    if (!comment) {
+      return res.status(404).json({ msg: 'Comment does not exist' });
     }
+
+    // Check user
+    if (comment.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: 'User not authorized' });
+    }
+
+    // Get remove index
+    const removeIndex = post.comments
+      .map(comment => comment.id)
+      .indexOf(req.params.comment_id);
+
+    post.comments.splice(removeIndex, 1);
+
+    await post.save();
+
+    res.json(post.comments);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
-);
+});
 
 module.exports = router;

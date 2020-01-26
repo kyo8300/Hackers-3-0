@@ -1,11 +1,6 @@
 const express = require('express');
 const app = express();
 const connectDB = require('./config/db');
-const passport = require('passport');
-const session = require('express-session');
-
-//Passport Config
-require('./config/passport')(passport);
 
 // Cennect Database
 connectDB();
@@ -13,24 +8,10 @@ connectDB();
 //Init middleware
 app.use(express.json({ extended: false }));
 
-// Express session
-app.use(
-  session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true
-  })
-);
-
-//Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
-
 //Routes
-app.get('/', (req, res) => res.send('Server Running'));
-app.use('/users', require('./routes/api/users'));
-app.use('/posts', require('./routes/api/posts'));
+app.use('/api/users', require('./routes/api/users'));
+app.use('/api/posts', require('./routes/api/posts'));
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log('Hello world!'));
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

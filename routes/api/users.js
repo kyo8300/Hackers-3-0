@@ -1,17 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const passport = require('passport');
-const { forwardAuthenticated } = require('../../config/auth');
+const auth = require('../../middleware/auth');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 const { check, validationResult } = require('express-validator');
 
 const User = require('../../models/User');
 
 // @route  GET users
-// @desc   Test route
-// @access Public
-router.get('/', (req, res) => res.send('User route'));
+// @desc   get user
+// @access private
+router.get('/', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 
 // @route  POST users/register
 // @desc   Register user
@@ -19,7 +28,6 @@ router.get('/', (req, res) => res.send('User route'));
 router.post(
   '/register',
   [
-    forwardAuthenticated,
     check('name', 'Name is required')
       .not()
       .isEmpty(),
@@ -55,6 +63,21 @@ router.post(
 
       user.password = await bcrypt.hash(password, salt);
       await user.save();
+      const payload = {
+        user: {
+          id: user.id
+        }
+      };
+
+      jwt.sign(
+        payload,
+        config.get('jwtSecret'),
+        { expiresIn: 360000 },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server error');
@@ -63,32 +86,59 @@ router.post(
 );
 
 // @route  GET users/login
-// @desc   Logout user
+// @desc   login user
 // @access private
-router.post('/login', forwardAuthenticated, async (req, res, next) => {
-  try {
-    passport.authenticate('local', {
-      successRedirect: '/',
-      failureRedirect: '/users/login',
-      failureFlash: true
-    })(req, res, next);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-});
+router.post(
+  '/login',
+  [
+    check('email', 'Please include a valid email').isEmail(),
+    check('password', 'Password is required').exists()
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-// @route  GET users/logout
-// @desc   Logout user
-// @access private
-router.get('/logout', async (req, res) => {
-  try {
-    req.logout();
-    res.redirect('/');
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    const { email, password } = req.body;
+
+    try {
+      let user = await User.findOne({ email });
+
+      if (!user) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+      }
+
+      const isMatch = await bcrypt.compare(password, user.password);
+
+      if (!isMatch) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+      }
+
+      const payload = {
+        user: {
+          id: user.id
+        }
+      };
+
+      jwt.sign(
+        payload,
+        config.get('jwtSecret'),
+        { expiresIn: 360000 },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server error');
+    }
   }
-});
+);
 
 module.exports = router;
