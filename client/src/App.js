@@ -8,6 +8,7 @@ import Login from './components/auth/Login';
 import Alert from './components/layouts/Alert';
 import Posts from './components/posts/Posts';
 import PostForm from './components/posts/PostForm';
+import Post from './components/post/Post';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 //Redux
@@ -35,6 +36,7 @@ const App = () => {
             <Switch>
               <Route exact path="/" component={Posts} />
               <Route exact path="/new" component={PostForm} />
+              <Route exact path="/posts/:id" component={Post} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
             </Switch>

@@ -1,18 +1,41 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Card } from 'react-bootstrap';
+import { Card, Row, Col } from 'react-bootstrap';
+import Loading from '../layouts/Loading';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const Posts = () => {
-  return (
+import { getPosts } from '../../actions/post';
+
+const Posts = ({ getPosts, post: { posts, loading } }) => {
+  useEffect(() => {
+    getPosts();
+  }, [getPosts]);
+
+  return loading || posts === null ? (
+    <Loading />
+  ) : (
     <Row>
       <Col lg={2}>
         <Card border="primary">Space</Card>
       </Col>
       <Col lg={6}>
-        <Card border="primary">Post</Card>
+        {posts.map(post => (
+          <Card bg="dark" text="white" className="mb-2">
+            <Card.Header>Header</Card.Header>
+            <Card.Body>
+              <Link
+                to={`/posts/${post._id}`}
+                style={{ textDecorationColor: 'white' }}
+              >
+                <Card.Title key={post._id} className="text-white">
+                  {post.title}
+                </Card.Title>
+              </Link>
+            </Card.Body>
+          </Card>
+        ))}
       </Col>
       <Col lg={4}>
         <Card border="primary">Tag</Card>
@@ -21,17 +44,13 @@ const Posts = () => {
   );
 };
 
-export default Posts;
-
-/*
 Posts.propTypes = {
-  logout: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  getPosts: PropTypes.func.isRequired,
+  post: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  post: state.post
 });
 
-export default connect(mapStateToProps, { logout })(Posts);
-*/
+export default connect(mapStateToProps, { getPosts })(Posts);
