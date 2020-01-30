@@ -132,4 +132,36 @@ input:focus :-ms-input-placeholder {
   }
 }
 
-/* post-form textarea */
+/* arrow size */
+.arrow-size {
+  font-size: 1.4rem;
+}
+
+.round-size {
+  font-size: 0.5rem;
+  padding: 2px 3.5px;
+}
+
+.num-size {
+  font-weight: bold;
+  padding-left: 11px;
+}
+
+.mm {
+  color: #ff4500;
+}
+
+.like-btn {
+  background-color: #343a40;
+  border: none;
+  color: white;
+}
+
+.like-btn:hover {
+  color: wheat;
+}
+
+.like-btn:focus {
+  border: none;
+  outline: none;
+}

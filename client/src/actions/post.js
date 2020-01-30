@@ -1,6 +1,12 @@
 import axios from 'axios';
 import { setAlert } from './alert';
-import { POST_ERROR, ADD_POST, GET_POSTS, GET_POST } from './types';
+import {
+  POST_ERROR,
+  ADD_POST,
+  GET_POSTS,
+  GET_POST,
+  LIKEorDISLIKE
+} from './types';
 
 //Add post
 export const addPost = ({ title, text }) => async dispatch => {
@@ -21,6 +27,40 @@ export const addPost = ({ title, text }) => async dispatch => {
     });
 
     dispatch(setAlert('Post Created', 'success'));
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+//Like
+export const addLike = id => async dispatch => {
+  try {
+    const res = await axios.put(`/api/posts/like/${id}`);
+
+    dispatch({
+      type: LIKEorDISLIKE,
+      payload: { id, likes: res.data }
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+//Dislike
+export const removeLike = id => async dispatch => {
+  try {
+    const res = await axios.put(`/api/posts/unlike/${id}`);
+
+    dispatch({
+      type: LIKEorDISLIKE,
+      payload: { id, likes: res.data }
+    });
   } catch (err) {
     dispatch({
       type: POST_ERROR,
