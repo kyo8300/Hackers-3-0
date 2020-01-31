@@ -165,3 +165,28 @@ input:focus :-ms-input-placeholder {
   border: none;
   outline: none;
 }
+
+/* comment form */
+.commment-layout {
+  color: white !important;
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.commment-layout:focus {
+  border-color: white !important;
+}
+
+.pad {
+  padding-bottom: 55px;
+}
+
+/* comment item*/
+.user-profile {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.text {
+  font-size: 1.1rem;
+  word-break: break-word;
+}

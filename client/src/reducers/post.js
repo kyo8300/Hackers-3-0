@@ -3,7 +3,8 @@ import {
   POST_ERROR,
   GET_POSTS,
   GET_POST,
-  LIKEorDISLIKE
+  LIKEorDISLIKE,
+  ADD_COMMENT
 } from '../actions/types';
 const initialState = {
   posts: [],
@@ -40,6 +41,13 @@ export default function(state = initialState, action) {
         posts: state.posts.map(post =>
           post._id === payload.id ? { ...post, likes: payload.likes } : post
         ),
+        post: { ...state.post, likes: payload.likes },
+        loading: false
+      };
+    case ADD_COMMENT:
+      return {
+        ...state,
+        post: { ...state.post, comments: payload },
         loading: false
       };
     case POST_ERROR:

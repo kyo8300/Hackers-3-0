@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Row, Col } from 'react-bootstrap';
 import Loading from '../layouts/Loading';
-import { Redirect } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
 
 import { connect } from 'react-redux';
