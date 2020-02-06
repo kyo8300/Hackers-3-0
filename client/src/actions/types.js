@@ -14,3 +14,5 @@ export const GET_POSTS = 'GET_POSTS';
 export const GET_POST = 'GET_POST';
 export const LIKEorDISLIKE = 'LIKEorDISLIKE';
 export const ADD_COMMENT = 'ADD_COMMENT';
+
+export const LIKE_OR_DISLIKE_COMMENT = 'LIKE_OR_DISLIKE_COMMENT';

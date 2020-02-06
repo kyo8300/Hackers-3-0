@@ -6,7 +6,8 @@ import {
   GET_POSTS,
   GET_POST,
   LIKEorDISLIKE,
-  ADD_COMMENT
+  ADD_COMMENT,
+  LIKE_OR_DISLIKE_COMMENT
 } from './types';
 
 //Add post
@@ -125,6 +126,44 @@ export const addComment = (postId, formData) => async dispatch => {
     });
 
     dispatch(setAlert('Comment Added', 'success'));
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+//Like comment
+export const addLikeComment = (postId, commentId) => async dispatch => {
+  try {
+    const res = await axios.put(
+      `/api/posts/comment/like/${postId}/${commentId}`
+    );
+
+    dispatch({
+      type: LIKE_OR_DISLIKE_COMMENT,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+//Dislike comment
+export const removeLikeComment = (postId, commentId) => async dispatch => {
+  try {
+    const res = await axios.put(
+      `/api/posts/comment/dislike/${postId}/${commentId}`
+    );
+
+    dispatch({
+      type: LIKE_OR_DISLIKE_COMMENT,
+      payload: res.data
+    });
   } catch (err) {
     dispatch({
       type: POST_ERROR,

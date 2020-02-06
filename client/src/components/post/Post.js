@@ -6,13 +6,13 @@ import CommentForm from '../post/CommentForm';
 import CommentItem from '../post/CommentItem';
 import { Card } from 'react-bootstrap';
 
-import { connect } from 'react-redux';
-import Loading from '../layouts/Loading';
-
 //Markdown
 import marked from 'marked';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/railscasts.css';
+
+import { connect } from 'react-redux';
+import Loading from '../layouts/Loading';
 
 marked.setOptions({
   langPrefix: 'hljs language-',

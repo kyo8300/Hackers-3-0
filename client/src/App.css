@@ -190,3 +190,25 @@ input:focus :-ms-input-placeholder {
   font-size: 1.1rem;
   word-break: break-word;
 }
+
+.like-comment-btn {
+  background-color: black;
+  border: none;
+  color: white;
+  font-size: 0.9rem;
+}
+
+.like-comment-btn:hover {
+  color: wheat;
+}
+
+.like-comment-btn:focus {
+  border: none;
+  outline: none;
+}
+
+.comment-num {
+  font-weight: bold;
+  padding-left: 6px;
+  padding-right: 13px;
+}

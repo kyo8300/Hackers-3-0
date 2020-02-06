@@ -4,7 +4,8 @@ import {
   GET_POSTS,
   GET_POST,
   LIKEorDISLIKE,
-  ADD_COMMENT
+  ADD_COMMENT,
+  LIKE_OR_DISLIKE_COMMENT
 } from '../actions/types';
 const initialState = {
   posts: [],
@@ -42,6 +43,15 @@ export default function(state = initialState, action) {
           post._id === payload.id ? { ...post, likes: payload.likes } : post
         ),
         post: { ...state.post, likes: payload.likes },
+        loading: false
+      };
+    case LIKE_OR_DISLIKE_COMMENT:
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          comments: payload
+        },
         loading: false
       };
     case ADD_COMMENT:

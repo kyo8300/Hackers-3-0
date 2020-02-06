@@ -169,6 +169,72 @@ router.put('/unlike/:id', auth, async (req, res) => {
   }
 });
 
+// @route    POST api/posts/comment/like/:postid/:commentid
+// @desc     like a comment
+// @access   Private
+router.put('/comment/like/:postid/:commentid', auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postid);
+
+    const comment = post.comments.filter(
+      comment => comment._id.toString() === req.params.commentid
+    );
+
+    // Check if the post has already been liked
+    if (
+      comment[0].commentlikes.filter(
+        like => like.user.toString() === req.user.id
+      ).length > 0
+    ) {
+      return res.status(400).json({ msg: 'Post already liked' });
+    }
+    comment[0].commentlikes.unshift({ user: req.user.id });
+
+    await post.save();
+
+    res.json(post.comments);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    POST api/posts/comment/dislike/:postid/:commentid
+// @desc     dislike a comment
+// @access   Private
+router.put('/comment/dislike/:postid/:commentid', auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postid);
+
+    const comment = post.comments.filter(
+      comment => comment._id.toString() === req.params.commentid
+    );
+
+    // Check if the post has already been liked
+    if (
+      comment[0].commentlikes.filter(
+        like => like.user.toString() === req.user.id
+      ).length === 0
+    ) {
+      return res.status(400).json({ msg: 'Post has not yet been liked' });
+    }
+
+    // Get remove index
+    const removeIndex = comment[0].commentlikes
+      .map(like => like.user.toString())
+      .indexOf(req.user.id);
+
+    comment[0].commentlikes.splice(removeIndex, 1);
+
+    await post.save();
+
+    res.json(post.comments);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route    POST api/posts/comment/:id
 // @desc     Comment on a post
 // @access   Private
