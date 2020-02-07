@@ -9,6 +9,7 @@ import Alert from './components/layouts/Alert';
 import Posts from './components/posts/Posts';
 import PostForm from './components/posts/PostForm';
 import Post from './components/post/Post';
+import Communities from './components/community/Communities';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 //Redux
@@ -34,6 +35,7 @@ const App = () => {
           <section className="container">
             <Alert />
             <Switch>
+              <Route exact path="/communities" component={Communities} />
               <Route exact path="/" component={Posts} />
               <Route exact path="/new" component={PostForm} />
               <Route exact path="/posts/:id" component={Post} />
