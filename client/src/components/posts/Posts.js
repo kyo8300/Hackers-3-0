@@ -47,7 +47,9 @@ const Posts = ({
       <Col lg={6}>
         {posts.map(post => (
           <Card bg="dark" text="white" className="mb-2" key={post._id}>
-            <Card.Header>Header</Card.Header>
+            <Card.Header>
+              <div class="user-profile">posted by {post.name}</div>
+            </Card.Header>
             <Card.Body>
               <Link
                 to={`/posts/${post._id}`}

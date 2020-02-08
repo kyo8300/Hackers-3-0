@@ -73,7 +73,7 @@ router.put('/follow/:id', auth, async (req, res) => {
     if (
       community.followers.filter(
         follower => follower.user.toString() === req.user.id
-      )
+      ).length > 0
     ) {
       return res.status(400).json({ msg: 'The user already has followed' });
     }

@@ -212,3 +212,21 @@ input:focus :-ms-input-placeholder {
   padding-left: 6px;
   padding-right: 13px;
 }
+
+/* community card */
+.community-card {
+  background-color: black !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.community-img {
+  vertical-align: top;
+}
+
+.leave-hover:after {
+  content: 'Joined';
+}
+
+.leave-hover:hover:after {
+  content: 'Leave';
+}

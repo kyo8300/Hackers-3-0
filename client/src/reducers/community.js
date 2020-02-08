@@ -1,4 +1,8 @@
-import { GET_COMMUNITIES, COMMUNITY_ERROR } from '../actions/types';
+import {
+  GET_COMMUNITIES,
+  JOIN_COMMUNITY,
+  COMMUNITY_ERROR
+} from '../actions/types';
 
 const initialState = {
   communities: [],
@@ -16,12 +20,23 @@ export default function(state = initialState, action) {
         communities: payload,
         loading: false
       };
+    case JOIN_COMMUNITY:
+      return {
+        ...state,
+        communities: state.communities.map(community =>
+          community._id === payload.id
+            ? { ...community, followers: payload.followers }
+            : community
+        ),
+        loading: false
+      };
     case COMMUNITY_ERROR:
       return {
         ...state,
         error: payload,
         loading: false
       };
+
     default:
       return state;
   }
