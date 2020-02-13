@@ -59,7 +59,8 @@ const Communities = ({
             <div className="d-inline-block mr-2">
               <Card.Title className=" ml-3 mb-1">{community.name}</Card.Title>
               <Card.Text className="ml-3">
-                {community.followers.length} members 0 posts
+                {community.followers.length} members {'・'}{' '}
+                {community.posts.length} posts
               </Card.Text>
             </div>
             {/*  Check user is null or not first, if not, check that user followed a community or not */}

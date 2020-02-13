@@ -1,8 +1,12 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Row, Col, Button, Form } from 'react-bootstrap';
+import Select from 'react-select';
+
+import { getCommunities } from '../../actions/community';
 import { addPost } from '../../actions/post';
+import Loading from '../layouts/Loading';
 
 //Markdown
 import marked from 'marked';
@@ -16,26 +20,59 @@ marked.setOptions({
   }
 });
 
-const PostForm = ({ addPost }) => {
+const PostForm = ({
+  addPost,
+  getCommunities,
+  community: { communities, loading }
+}) => {
+  useEffect(() => {
+    getCommunities();
+  }, [getCommunities]);
+
   const [formData, setFormData] = useState({
     title: '',
-    text: ''
+    text: '',
+    mycommunity: ''
   });
 
-  const { title, text } = formData;
+  const { title, text, mycommunity } = formData;
+
+  const options = communities.map(community => ({
+    label: community.name,
+    value: community._id
+  }));
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = e => {
-    e.preventDefault();
-    addPost({ title, text });
-    setFormData({ title: '', text: '' });
+  const onChangeSelect = (e, name) => {
+    console.log(name);
+    console.log(e.value);
+    setFormData({ ...formData, [name]: e.value });
   };
 
-  return (
+  const onSubmit = e => {
+    e.preventDefault();
+    addPost({ title, text, mycommunity });
+    setFormData({ title: '', text: '', mycommunity: '' });
+  };
+
+  return loading || communities === null ? (
+    <Loading />
+  ) : (
     <Fragment>
       <Form onSubmit={e => onSubmit(e)}>
+        <Form.Group className="mt-4 h5">
+          <Form.Label>Community</Form.Label>
+          <Select
+            options={options}
+            name="mycommunity"
+            onChange={e => onChangeSelect(e, 'mycommunity')}
+            className="text-dark icon"
+            placeholder="&#xf002; Search communities..."
+            required
+          />
+        </Form.Group>
         <Form.Group className="mt-4 h5">
           <Form.Label>Title</Form.Label>
           <Form.Control
@@ -86,7 +123,12 @@ const PostForm = ({ addPost }) => {
 };
 
 PostForm.propTypes = {
-  addPost: PropTypes.func.isRequired
+  addPost: PropTypes.func.isRequired,
+  getCommunities: PropTypes.func.isRequired
 };
 
-export default connect(null, { addPost })(PostForm);
+const mapStateToProps = state => ({
+  community: state.community
+});
+
+export default connect(mapStateToProps, { addPost, getCommunities })(PostForm);

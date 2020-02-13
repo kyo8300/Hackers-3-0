@@ -230,3 +230,14 @@ input:focus :-ms-input-placeholder {
 .leave-hover:hover:after {
   content: 'Leave';
 }
+
+.icon {
+  font-family: 'Font Awesome 5 Free'; /*←ココ！！！！！！！*/
+  font-weight: 900;
+  font-size: medium;
+}
+
+/* post header */
+.post-info {
+  font-size: large;
+}

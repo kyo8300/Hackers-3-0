@@ -48,7 +48,23 @@ const Posts = ({
         {posts.map(post => (
           <Card bg="dark" text="white" className="mb-2" key={post._id}>
             <Card.Header>
-              <div class="user-profile">posted by {post.name}</div>
+              <div>
+                <div class="d-inline">
+                  <img
+                    src={`data:image/png;base64,${Buffer.from(
+                      post.community.avatar.data
+                    ).toString('base64')}`}
+                    className="mr-1"
+                    width="20px"
+                    height="20px"
+                    fluid
+                  />{' '}
+                  {post.community.name}
+                </div>
+                <div class="d-inline user-profile">
+                  ・ posted by {post.name}
+                </div>
+              </div>
             </Card.Header>
             <Card.Body>
               <Link

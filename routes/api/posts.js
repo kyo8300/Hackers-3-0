@@ -6,9 +6,10 @@ const auth = require('../../middleware/auth');
 
 const Post = require('../../models/Post');
 const User = require('../../models/User');
+const Community = require('../../models/Community');
 
 // @route    POST /posts
-// @desc     Create a post
+// @desc     Create a post and push to a community
 // @access   Private
 router.post(
   '/',
@@ -29,19 +30,25 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { title, text } = req.body;
+    const { title, text, mycommunity } = req.body;
 
     try {
       const user = await User.findById(req.user.id).select('-password');
+      const community = await Community.findById(mycommunity);
 
       const newPost = new Post({
         title: title,
         text: text,
         name: user.name,
-        user: req.user.id
+        user: req.user.id,
+        community: mycommunity
       });
 
       const post = await newPost.save();
+
+      //adds this post to community
+      community.posts.unshift({ post: post._id });
+      await community.save();
 
       res.json(post);
     } catch (err) {
@@ -56,9 +63,11 @@ router.post(
 // @access   Public
 router.get('/', async (req, res) => {
   try {
-    const posts = await Post.find().sort({ date: -1 });
+    const posts = await Post.find()
+      .sort({ date: -1 })
+      .populate('community', ['name', 'avatar']);
     res.json(posts);
-  } catch (error) {
+  } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
@@ -69,7 +78,10 @@ router.get('/', async (req, res) => {
 // @access   Public
 router.get('/:id', async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate('community', [
+      'name',
+      'avatar'
+    ]);
 
     if (!post) {
       return res.status(404).json({ msg: 'Post not found' });

@@ -4,6 +4,7 @@ import { getPost, addLike, removeLike } from '../../actions/post';
 import { setAlert } from '../../actions/alert';
 import CommentForm from '../post/CommentForm';
 import CommentItem from '../post/CommentItem';
+import Moment from 'react-moment';
 import { Card } from 'react-bootstrap';
 
 //Markdown
@@ -56,8 +57,26 @@ const Post = ({
     <Fragment>
       <Card bg="dark" text="white" className="mb-2">
         <Card.Header>
-          Header
-          <div className="float-right">
+          <div class="d-inline-block">
+            <div class="post-info">
+              <img
+                src={`data:image/png;base64,${Buffer.from(
+                  post.community.avatar.data
+                ).toString('base64')}`}
+                className="mr-1"
+                width="30px"
+                height="30px"
+                fluid
+              />{' '}
+              {post.community.name}
+            </div>
+            <div class="user-profile mt-2">
+              posted by {post.name} {'・'}{' '}
+              <Moment format="YYYY/MM/DD HH:mm">{post.date}</Moment>
+            </div>
+          </div>
+
+          <div className="float-right d-inline">
             <button
               onClick={() => authCheck1(post._id)}
               class="like-btn d-block"

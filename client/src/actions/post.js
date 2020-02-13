@@ -11,14 +11,14 @@ import {
 } from './types';
 
 //Add post
-export const addPost = ({ title, text }) => async dispatch => {
+export const addPost = ({ title, text, mycommunity }) => async dispatch => {
   const config = {
     headers: {
       'Content-Type': 'application/json'
     }
   };
 
-  const body = JSON.stringify({ title, text });
+  const body = JSON.stringify({ title, text, mycommunity });
 
   try {
     const res = await axios.post('/api/posts', body, config);
