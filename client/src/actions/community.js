@@ -1,5 +1,10 @@
 import axios from 'axios';
-import { GET_COMMUNITIES, JOIN_COMMUNITY, COMMUNITY_ERROR } from './types';
+import {
+  GET_COMMUNITIES,
+  JOIN_COMMUNITY,
+  COMMUNITY_ERROR,
+  GET_COMMUNITY
+} from './types';
 
 //Get communities
 export const getCommunities = () => async dispatch => {
@@ -8,6 +13,23 @@ export const getCommunities = () => async dispatch => {
 
     dispatch({
       type: GET_COMMUNITIES,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: COMMUNITY_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+//Get community
+export const getCommunity = id => async dispatch => {
+  try {
+    const res = await axios.get(`/api/communities/${id}`);
+
+    dispatch({
+      type: GET_COMMUNITY,
       payload: res.data
     });
   } catch (err) {

@@ -18,8 +18,31 @@ router.get('/', async (req, res) => {
   try {
     const communities = await Community.find().sort({ date: -1 });
     res.json(communities);
-  } catch (error) {
+  } catch (err) {
     console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    POST api/communities/:id
+// @desc     Get community
+// @access   Private
+router.get('/:id', async (req, res) => {
+  try {
+    const community = await Community.findById(
+      req.params.id
+    ).populate('posts.post', ['name', 'title', 'likes']);
+
+    if (!community) {
+      return res.status(404).json({ msg: 'Community not found' });
+    }
+
+    res.json(community);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({ msg: 'Community not found' });
+    }
     res.status(500).send('Server Error');
   }
 });

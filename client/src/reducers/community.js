@@ -1,5 +1,6 @@
 import {
   GET_COMMUNITIES,
+  GET_COMMUNITY,
   JOIN_COMMUNITY,
   COMMUNITY_ERROR
 } from '../actions/types';
@@ -18,6 +19,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         communities: payload,
+        loading: false
+      };
+    case GET_COMMUNITY:
+      return {
+        ...state,
+        community: payload,
         loading: false
       };
     case JOIN_COMMUNITY:

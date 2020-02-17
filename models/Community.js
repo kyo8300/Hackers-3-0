@@ -14,7 +14,7 @@ const CommunitySchema = new Schema({
     {
       post: {
         type: Schema.Types.ObjectId,
-        ref: 'posts'
+        ref: 'post'
       }
     }
   ],

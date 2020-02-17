@@ -1,4 +1,5 @@
 import React, { useEffect, Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import Loading from '../layouts/Loading';
 import { Card, Button } from 'react-bootstrap';
 
@@ -57,7 +58,14 @@ const Communities = ({
               fluid
             />
             <div className="d-inline-block mr-2">
-              <Card.Title className=" ml-3 mb-1">{community.name}</Card.Title>
+              <Link
+                to={`/community/${community._id}`}
+                style={{ textDecorationColor: 'white' }}
+              >
+                <Card.Title className=" ml-3 mb-1 text-white">
+                  {community.name}
+                </Card.Title>
+              </Link>
               <Card.Text className="ml-3">
                 {community.followers.length} members {'・'}{' '}
                 {community.posts.length} posts
