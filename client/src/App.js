@@ -6,6 +6,7 @@ import Heading from './components/layouts/Heading';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Alert from './components/layouts/Alert';
+import LoginNotification from './components/layouts/LoginNotification';
 import Posts from './components/posts/Posts';
 import PostForm from './components/posts/PostForm';
 import Post from './components/post/Post';
@@ -34,6 +35,7 @@ const App = () => {
         <Fragment>
           <Heading />
           <section className="container">
+            <LoginNotification />
             <Alert />
             <Switch>
               <Route exact path="/communities" component={Communities} />

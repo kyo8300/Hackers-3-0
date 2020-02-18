@@ -4,19 +4,19 @@ import { connect } from 'react-redux';
 import { Form, Button } from 'react-bootstrap';
 import { addComment } from '../../actions/post';
 import TextareaAutosize from 'react-textarea-autosize';
-import { setAlert } from '../../actions/alert';
+import { showModal } from '../../actions/modal';
 
 const CommentForm = ({
   postId,
   addComment,
   auth: { isAuthenticated },
-  setAlert
+  showModal
 }) => {
   const [text, setText] = useState('');
 
   const authCheckatComment = (id, { text }) => {
     if (!isAuthenticated) {
-      setAlert('Please Login first.', 'danger');
+      showModal();
     } else {
       addComment(id, { text });
     }
@@ -61,11 +61,12 @@ const CommentForm = ({
 };
 
 CommentForm.propTypes = {
-  addComment: PropTypes.func.isRequired
+  addComment: PropTypes.func.isRequired,
+  showModal: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, { addComment, setAlert })(CommentForm);
+export default connect(mapStateToProps, { addComment, showModal })(CommentForm);

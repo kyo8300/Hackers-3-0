@@ -4,19 +4,19 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import { addLikeComment, removeLikeComment } from '../../actions/post';
-import { setAlert } from '../../actions/alert';
+import { showModal } from '../../actions/modal';
 
 const CommentItem = ({
   addLikeComment,
   removeLikeComment,
-  setAlert,
+  showModal,
   postId,
   comment: { _id, text, name, user, date, commentlikes },
   auth
 }) => {
   const authCheck1 = (postId, commentId) => {
     if (!auth.isAuthenticated) {
-      setAlert('Please Login first.', 'danger');
+      showModal();
     } else {
       addLikeComment(postId, commentId);
     }
@@ -24,7 +24,7 @@ const CommentItem = ({
 
   const authCheck2 = (postId, commentId) => {
     if (!auth.isAuthenticated) {
-      setAlert('Please Login first.', 'danger');
+      showModal();
     } else {
       removeLikeComment(postId, commentId);
     }
@@ -63,7 +63,7 @@ const CommentItem = ({
 CommentItem.propTypes = {
   addLikeComment: PropTypes.func.isRequired,
   removeLikeComment: PropTypes.func.isRequired,
-  setAlert: PropTypes.func.isRequired,
+  showModal: PropTypes.func.isRequired,
   postId: PropTypes.string.isRequired,
   comment: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired
@@ -76,5 +76,5 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   addLikeComment,
   removeLikeComment,
-  setAlert
+  showModal
 })(CommentItem);

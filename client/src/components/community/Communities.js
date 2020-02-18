@@ -6,7 +6,7 @@ import { Card, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { setAlert } from '../../actions/alert';
+import { showModal } from '../../actions/modal';
 import {
   getCommunities,
   joinCommunity,
@@ -17,7 +17,7 @@ const Communities = ({
   getCommunities,
   joinCommunity,
   leaveCommunity,
-  setAlert,
+  showModal,
   community: { communities, loading },
   auth: { user, isAuthenticated }
 }) => {
@@ -27,7 +27,7 @@ const Communities = ({
 
   const authCheck1 = id => {
     if (!isAuthenticated) {
-      setAlert('Please Login first.', 'danger');
+      showModal();
     } else {
       joinCommunity(id);
     }
@@ -35,7 +35,7 @@ const Communities = ({
 
   const authCheck2 = id => {
     if (!isAuthenticated) {
-      setAlert('Please Login first.', 'danger');
+      showModal();
     } else {
       leaveCommunity(id);
     }
@@ -107,7 +107,7 @@ const Communities = ({
 Communities.propTypes = {
   getCommunities: PropTypes.func.isRequired,
   joinCommunity: PropTypes.func.isRequired,
-  setAlert: PropTypes.func.isRequired,
+  showModal: PropTypes.func.isRequired,
   leaveCommunity: PropTypes.func.isRequired
 };
 
@@ -120,5 +120,5 @@ export default connect(mapStateToProps, {
   getCommunities,
   leaveCommunity,
   joinCommunity,
-  setAlert
+  showModal
 })(Communities);

@@ -5,19 +5,19 @@ import { Link } from 'react-router-dom';
 import { Card } from 'react-bootstrap';
 
 import { addLike, removeLike } from '../../actions/post';
-import { setAlert } from '../../actions/alert';
+import { showModal } from '../../actions/modal';
 import Loading from '../layouts/Loading';
 
 const CommunityPosts = ({
   addLike,
   removeLike,
-  setAlert,
+  showModal,
   auth: { user, isAuthenticated },
   posts
 }) => {
   const authCheck1 = id => {
     if (!isAuthenticated) {
-      setAlert('Please Login first.', 'danger');
+      showModal();
     } else {
       addLike(id);
     }
@@ -25,7 +25,7 @@ const CommunityPosts = ({
 
   const authCheck2 = id => {
     if (!isAuthenticated) {
-      setAlert('Please Login first.', 'danger');
+      showModal();
     } else {
       removeLike(id);
     }
@@ -91,11 +91,11 @@ const mapStateToProps = state => ({
 CommunityPosts.propTypes = {
   addLike: PropTypes.func.isRequired,
   removeLike: PropTypes.func.isRequired,
-  setAlert: PropTypes.func.isRequired
+  showModal: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, {
   addLike,
   removeLike,
-  setAlert
+  showModal
 })(CommunityPosts);

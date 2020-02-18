@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Row, Col } from 'react-bootstrap';
 import Loading from '../layouts/Loading';
-import { setAlert } from '../../actions/alert';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { getPosts, addLike, removeLike } from '../../actions/post';
+import { showModal } from '../../actions/modal';
 
 const Posts = ({
   getPosts,
@@ -15,7 +15,7 @@ const Posts = ({
   auth: { user, isAuthenticated },
   addLike,
   removeLike,
-  setAlert
+  showModal
 }) => {
   useEffect(() => {
     getPosts();
@@ -23,7 +23,7 @@ const Posts = ({
 
   const authCheck1 = id => {
     if (!isAuthenticated) {
-      setAlert('Please Login first.', 'danger');
+      showModal();
     } else {
       addLike(id);
     }
@@ -31,7 +31,7 @@ const Posts = ({
 
   const authCheck2 = id => {
     if (!isAuthenticated) {
-      setAlert('Please Login first.', 'danger');
+      showModal();
     } else {
       removeLike(id);
     }
@@ -50,16 +50,24 @@ const Posts = ({
             <Card.Header>
               <div>
                 <div class="d-inline">
-                  <img
-                    src={`data:image/png;base64,${Buffer.from(
-                      post.community.avatar.data
-                    ).toString('base64')}`}
-                    className="mr-1"
-                    width="20px"
-                    height="20px"
-                    fluid
-                  />{' '}
-                  {post.community.name}
+                  <Link
+                    to={`/community/${post.community._id}`}
+                    style={{
+                      textDecoration: 'none'
+                    }}
+                    className="text-white"
+                  >
+                    <img
+                      src={`data:image/png;base64,${Buffer.from(
+                        post.community.avatar.data
+                      ).toString('base64')}`}
+                      className="mr-1"
+                      width="20px"
+                      height="20px"
+                      fluid
+                    />{' '}
+                    {post.community.name}
+                  </Link>
                 </div>
                 <div class="d-inline user-profile">
                   ・ posted by {post.name}
@@ -120,7 +128,7 @@ Posts.propTypes = {
   getPosts: PropTypes.func.isRequired,
   addLike: PropTypes.func.isRequired,
   removeLike: PropTypes.func.isRequired,
-  setAlert: PropTypes.func.isRequired,
+  showModal: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -134,5 +142,5 @@ export default connect(mapStateToProps, {
   getPosts,
   addLike,
   removeLike,
-  setAlert
+  showModal
 })(Posts);

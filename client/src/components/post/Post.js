@@ -1,7 +1,7 @@
 import React, { useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { getPost, addLike, removeLike } from '../../actions/post';
-import { setAlert } from '../../actions/alert';
+import { showModal } from '../../actions/modal';
 import CommentForm from '../post/CommentForm';
 import CommentItem from '../post/CommentItem';
 import Moment from 'react-moment';
@@ -26,7 +26,7 @@ const Post = ({
   getPost,
   addLike,
   removeLike,
-  setAlert,
+  showModal,
   post: { post, loading },
   auth,
   match
@@ -37,7 +37,7 @@ const Post = ({
 
   const authCheck1 = id => {
     if (!auth.isAuthenticated) {
-      setAlert('Please Login first.', 'danger');
+      showModal();
     } else {
       addLike(id);
     }
@@ -45,7 +45,7 @@ const Post = ({
 
   const authCheck2 = id => {
     if (!auth.isAuthenticated) {
-      setAlert('Please Login first.', 'danger');
+      showModal();
     } else {
       removeLike(id);
     }
@@ -126,7 +126,7 @@ Post.propTypes = {
   getPost: PropTypes.func.isRequired,
   addLike: PropTypes.func.isRequired,
   removeLike: PropTypes.func.isRequired,
-  setAlert: PropTypes.func.isRequired,
+  showModal: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired
 };
 
@@ -139,5 +139,5 @@ export default connect(mapStateToProps, {
   getPost,
   addLike,
   removeLike,
-  setAlert
+  showModal
 })(Post);
