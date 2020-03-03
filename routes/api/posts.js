@@ -7,9 +7,10 @@ const auth = require('../../middleware/auth');
 const Post = require('../../models/Post');
 const User = require('../../models/User');
 const Community = require('../../models/Community');
+const Profile = require('../../models/Profile');
 
 // @route    POST /posts
-// @desc     Create a post and push to a community
+// @desc     Create a post, push to a community and profile
 // @access   Private
 router.post(
   '/',
@@ -35,6 +36,9 @@ router.post(
     try {
       const user = await User.findById(req.user.id).select('-password');
       const community = await Community.findById(mycommunity);
+      const profile = await Profile.findOne({
+        user: user
+      });
 
       const newPost = new Post({
         title: title,
@@ -49,6 +53,10 @@ router.post(
       //adds this post to community
       community.posts.unshift({ post: post._id });
       await community.save();
+
+      //adds this post to profile
+      profile.posts.unshift({ post: post._id });
+      await profile.save();
 
       res.json(post);
     } catch (err) {
@@ -248,7 +256,7 @@ router.put('/comment/dislike/:postid/:commentid', auth, async (req, res) => {
 });
 
 // @route    POST api/posts/comment/:id
-// @desc     Comment on a post
+// @desc     Comment on a post and add to profile
 // @access   Private
 router.post(
   '/comment/:id',
@@ -269,6 +277,9 @@ router.post(
     try {
       const user = await User.findById(req.user.id).select('-password');
       const post = await Post.findById(req.params.id);
+      const profile = await Profile.findOne({
+        user: user
+      });
 
       const newComment = {
         text: req.body.text,
@@ -279,6 +290,14 @@ router.post(
       post.comments.unshift(newComment);
 
       await post.save();
+
+      //add comment to profile
+      const profileComment = {
+        text: req.body.text,
+        post: post
+      };
+      profile.comments.unshift(profileComment);
+      await profile.save();
 
       res.json(post.comments);
     } catch (err) {

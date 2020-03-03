@@ -241,3 +241,35 @@ input:focus :-ms-input-placeholder {
 .post-info {
   font-size: large;
 }
+
+/* Profile */
+.profile-navs {
+  border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.profile-date {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.profile-name {
+  font-size: 1.1rem;
+}
+
+.nav-item {
+  color: white;
+  font-weight: 500;
+  margin: 0 7px;
+}
+
+.nav-item:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.profile-comment-post-title {
+  font-size: small;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.profile-title {
+  font-size: 1rem;
+}

@@ -8,8 +8,9 @@ const config = require('config');
 const { check, validationResult } = require('express-validator');
 
 const User = require('../../models/User');
+const Profile = require('../../models/Profile');
 
-// @route  GET users
+// @route  GET /api/users
 // @desc   get user
 // @access private
 router.get('/', auth, async (req, res) => {
@@ -23,7 +24,7 @@ router.get('/', auth, async (req, res) => {
 });
 
 // @route  POST users/register
-// @desc   Register user
+// @desc   Register user and create the user's profile
 // @access Public
 router.post(
   '/register',
@@ -63,6 +64,13 @@ router.post(
 
       user.password = await bcrypt.hash(password, salt);
       await user.save();
+
+      //create profile
+      profile = new Profile({
+        user: user
+      });
+      await profile.save();
+
       const payload = {
         user: {
           id: user.id

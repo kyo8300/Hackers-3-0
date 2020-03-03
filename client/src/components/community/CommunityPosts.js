@@ -6,7 +6,6 @@ import { Card } from 'react-bootstrap';
 
 import { addLike, removeLike } from '../../actions/post';
 import { showModal } from '../../actions/modal';
-import Loading from '../layouts/Loading';
 
 const CommunityPosts = ({
   addLike,
@@ -36,7 +35,18 @@ const CommunityPosts = ({
       {posts.map(post => (
         <Card bg="dark" text="white" className="mb-2">
           <Card.Header>
-            <div class="d-inline user-profile">posted by {post.post.name}</div>
+            <div class="d-inline user-profile">
+              posted by{' '}
+              <Link
+                to={`/profile/${post.user}`}
+                style={{
+                  textDecorationColor: 'white',
+                  color: 'rgba(255, 255, 255, 0.5)'
+                }}
+              >
+                {post.post.name}
+              </Link>
+            </div>
           </Card.Header>
           <Card.Body>
             <Link

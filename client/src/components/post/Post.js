@@ -14,6 +14,7 @@ import 'highlight.js/styles/railscasts.css';
 
 import { connect } from 'react-redux';
 import Loading from '../layouts/Loading';
+import { Link } from 'react-router-dom';
 
 marked.setOptions({
   langPrefix: 'hljs language-',
@@ -71,8 +72,17 @@ const Post = ({
               {post.community.name}
             </div>
             <div class="user-profile mt-2">
-              posted by {post.name} {'・'}{' '}
-              <Moment format="YYYY/MM/DD HH:mm">{post.date}</Moment>
+              posted by{' '}
+              <Link
+                to={`/profile/${post.user}`}
+                style={{
+                  textDecorationColor: 'white',
+                  color: 'rgba(255, 255, 255, 0.5)'
+                }}
+              >
+                {post.name}
+              </Link>{' '}
+              {'・'} <Moment format="YYYY/MM/DD HH:mm">{post.date}</Moment>
             </div>
           </div>
 

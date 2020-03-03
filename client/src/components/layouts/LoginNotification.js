@@ -6,7 +6,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { hideModal } from '../../actions/modal';
 import { login } from '../../actions/auth';
 
-const LoginNotification = ({ hideModal, login, modal, isAuthenticated }) => {
+const LoginNotification = ({ hideModal, login, modal }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -91,12 +91,10 @@ const LoginNotification = ({ hideModal, login, modal, isAuthenticated }) => {
 LoginNotification.propTypes = {
   hideModal: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
-  modal: PropTypes.object.isRequired,
-  isAuthenticated: PropTypes.object.isRequired
+  modal: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
   modal: state.modal
 });
 

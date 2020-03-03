@@ -35,7 +35,8 @@ const Community = ({
 };
 
 Community.propTypes = {
-  getCommunity: PropTypes.func.isRequired
+  getCommunity: PropTypes.func.isRequired,
+  community: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({

@@ -124,7 +124,8 @@ const PostForm = ({
 
 PostForm.propTypes = {
   addPost: PropTypes.func.isRequired,
-  getCommunities: PropTypes.func.isRequired
+  getCommunities: PropTypes.func.isRequired,
+  community: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({

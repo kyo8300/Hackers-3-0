@@ -70,7 +70,16 @@ const Posts = ({
                   </Link>
                 </div>
                 <div class="d-inline user-profile">
-                  ・ posted by {post.name}
+                  ・ posted by{' '}
+                  <Link
+                    to={`/profile/${post.user}`}
+                    style={{
+                      textDecorationColor: 'white',
+                      color: 'rgba(255, 255, 255, 0.5)'
+                    }}
+                  >
+                    {post.name}
+                  </Link>
                 </div>
               </div>
             </Card.Header>
