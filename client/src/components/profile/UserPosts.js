@@ -1,16 +1,44 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { Card } from 'react-bootstrap';
+import { topUserSort } from '../../actions/sort';
+import { getProfile } from '../../actions/profile';
 
-const UserPosts = ({ posts }) => {
+import { Card, Dropdown, DropdownButton, ButtonGroup } from 'react-bootstrap';
+
+const UserPosts = ({ posts, userid, topUserSort, getProfile }) => {
   return (
     <Fragment>
-      {posts.map(post => (
+      <div className="mb-3">
+        {' '}
+        {[DropdownButton].map((DropdownType, idx) => (
+          <>
+            <DropdownType
+              as={ButtonGroup}
+              key={idx}
+              id={`dropdown-button-drop-${idx}`}
+              size="sm"
+              variant="secondary"
+              title="Sort posts"
+            >
+              <Dropdown.Item eventKey="2" onClick={() => topUserSort(userid)}>
+                <i class="fab fa-hotjar" /> Top{' '}
+              </Dropdown.Item>{' '}
+              <Dropdown.Item eventKey="1" onClick={() => getProfile(userid)}>
+                <i class="fas fa-sun" /> New{' '}
+              </Dropdown.Item>{' '}
+            </DropdownType>{' '}
+          </>
+        ))}{' '}
+      </div>{' '}
+      {posts.map((post) => (
         <Card
           bg="dark"
-          style={{ width: '80%' }}
+          style={{
+            width: '80%',
+          }}
           className="my-2 text-left mx-auto"
         >
           <Card.Header>
@@ -19,7 +47,7 @@ const UserPosts = ({ posts }) => {
               <Link
                 to={`/community/${post.post.community._id}`}
                 style={{
-                  textDecoration: 'none'
+                  textDecoration: 'none',
                 }}
                 className="text-white"
               >
@@ -32,32 +60,37 @@ const UserPosts = ({ posts }) => {
                   height="20px"
                   fluid
                 />{' '}
-                {post.post.community.name}
-              </Link>
-            </div>
+                {post.post.community.name}{' '}
+              </Link>{' '}
+            </div>{' '}
             <div className="d-inline float-right">
-              <i class="fas fa-thumbs-up" /> {post.post.likes.length}
-            </div>
-          </Card.Header>
+              <i class="fas fa-thumbs-up" /> {post.post.likes.length}{' '}
+            </div>{' '}
+          </Card.Header>{' '}
           <Card.Body>
             <Card.Title>
               <Link
                 to={`/posts/${post.post._id}`}
-                style={{ textDecorationColor: 'white' }}
+                style={{
+                  textDecorationColor: 'white',
+                }}
                 className="text-white profile-title"
               >
-                {post.post.title}
-              </Link>
-            </Card.Title>
-          </Card.Body>
+                {post.post.title}{' '}
+              </Link>{' '}
+            </Card.Title>{' '}
+          </Card.Body>{' '}
         </Card>
-      ))}
+      ))}{' '}
     </Fragment>
   );
 };
 
 UserPosts.propTypes = {
-  posts: PropTypes.object.isRequired
+  posts: PropTypes.object.isRequired,
+  userid: PropTypes.number.isRequired,
+  topUserSort: PropTypes.func.isRequired,
+  getProfile: PropTypes.func.isRequired,
 };
 
-export default UserPosts;
+export default connect(null, { topUserSort, getProfile })(UserPosts);

@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
   try {
     const community = await Community.findById(
       req.params.id
-    ).populate('posts.post', ['name', 'title', 'likes']);
+    ).populate('posts.post', ['name', 'title', 'likes', 'user']);
 
     if (!community) {
       return res.status(404).json({ msg: 'Community not found' });

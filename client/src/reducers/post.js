@@ -5,16 +5,16 @@ import {
   GET_POST,
   LIKEorDISLIKE,
   ADD_COMMENT,
-  LIKE_OR_DISLIKE_COMMENT
+  LIKE_OR_DISLIKE_COMMENT,
 } from '../actions/types';
 const initialState = {
   posts: [],
   post: null,
   loading: true,
-  error: {}
+  error: {},
 };
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
@@ -22,49 +22,49 @@ export default function(state = initialState, action) {
       return {
         ...state,
         posts: [payload, ...state.posts],
-        loading: false
+        loading: false,
       };
     case GET_POST:
       return {
         ...state,
         post: payload,
-        loading: false
+        loading: false,
       };
     case GET_POSTS:
       return {
         ...state,
         posts: payload,
-        loading: false
+        loading: false,
       };
     case LIKEorDISLIKE:
       return {
         ...state,
-        posts: state.posts.map(post =>
+        posts: state.posts.map((post) =>
           post._id === payload.id ? { ...post, likes: payload.likes } : post
         ),
         post: { ...state.post, likes: payload.likes },
-        loading: false
+        loading: false,
       };
     case LIKE_OR_DISLIKE_COMMENT:
       return {
         ...state,
         post: {
           ...state.post,
-          comments: payload
+          comments: payload,
         },
-        loading: false
+        loading: false,
       };
     case ADD_COMMENT:
       return {
         ...state,
         post: { ...state.post, comments: payload },
-        loading: false
+        loading: false,
       };
     case POST_ERROR:
       return {
         ...state,
         error: payload,
-        loading: false
+        loading: false,
       };
     default:
       return state;

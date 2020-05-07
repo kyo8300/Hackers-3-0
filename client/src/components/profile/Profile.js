@@ -13,7 +13,7 @@ const Profile = ({
   getProfile,
   profile: { profile, loading },
   auth: { user, isAuthenticated },
-  match
+  match,
 }) => {
   useEffect(() => {
     getProfile(match.params.id);
@@ -46,14 +46,17 @@ const Profile = ({
           defaultActiveKey="profile"
           id="uncontrolled-tab-example"
           activeKey={key}
-          onSelect={k => setKey(k)}
-          className="justify-content-center profile-navs"
+          onSelect={(k) => setKey(k)}
+          className="justify-content-center profile-navs mt-4 mb-3"
         >
           <Tab eventKey="posts" title="POSTS">
-            <UserPosts posts={profile.posts} />
+            <UserPosts posts={profile.posts} userid={profile.user._id} />
           </Tab>
           <Tab eventKey="comments" title="COMMENTS">
-            <UserComments comments={profile.comments} />
+            <UserComments
+              comments={profile.comments}
+              userid2={profile.user._id}
+            />
           </Tab>
         </Tabs>
       </div>
@@ -61,14 +64,14 @@ const Profile = ({
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   profile: state.profile,
-  auth: state.auth
+  auth: state.auth,
 });
 
 Profile.propTypes = {
   getProfile: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired
+  profile: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps, { getProfile })(Profile);

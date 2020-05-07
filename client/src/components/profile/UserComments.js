@@ -1,13 +1,42 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { Card } from 'react-bootstrap';
+import { getProfile } from '../../actions/profile';
+import { oldCommentsSort } from '../../actions/sort';
 
-const UserComments = ({ comments }) => {
+import { Card, DropdownButton, ButtonGroup, Dropdown } from 'react-bootstrap';
+
+const UserComments = ({ comments, userid2, getProfile, oldCommentsSort }) => {
   return (
     <Fragment>
-      {comments.map(comment => (
+      <div className="mb-3">
+        {' '}
+        {[DropdownButton].map((DropdownType, idx) => (
+          <>
+            <DropdownType
+              as={ButtonGroup}
+              key={idx}
+              id={`dropdown-button-drop-${idx}`}
+              size="sm"
+              variant="secondary"
+              title="Sort comments"
+            >
+              <Dropdown.Item eventKey="1" onClick={() => getProfile(userid2)}>
+                <i class="fas fa-sun" /> New{' '}
+              </Dropdown.Item>{' '}
+              <Dropdown.Item
+                eventKey="2"
+                onClick={() => oldCommentsSort(userid2)}
+              >
+                <i class="fas fa-sort-amount-down" /> Old{' '}
+              </Dropdown.Item>{' '}
+            </DropdownType>{' '}
+          </>
+        ))}{' '}
+      </div>{' '}
+      {comments.map((comment) => (
         <Card
           bg="dark"
           style={{ width: '80%' }}
@@ -17,7 +46,7 @@ const UserComments = ({ comments }) => {
             <Link
               to={`/community/${comment.post.community._id}`}
               style={{
-                textDecoration: 'none'
+                textDecoration: 'none',
               }}
               className="text-white"
             >
@@ -55,7 +84,10 @@ const UserComments = ({ comments }) => {
 };
 
 UserComments.propTypes = {
-  comments: PropTypes.object.isRequired
+  comments: PropTypes.object.isRequired,
+  userid2: PropTypes.number.isRequired,
+  getProfile: PropTypes.func.isRequired,
+  oldCommentsSort: PropTypes.func.isRequired,
 };
 
-export default UserComments;
+export default connect(null, { getProfile, oldCommentsSort })(UserComments);

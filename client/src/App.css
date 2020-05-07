@@ -273,3 +273,17 @@ input:focus :-ms-input-placeholder {
 .profile-title {
   font-size: 1rem;
 }
+
+div.dropdown-menu {
+  background-color: #545b62;
+  min-width: 3rem;
+}
+
+a.dropdown-item {
+  color: white;
+}
+
+a.dropdown-item:hover {
+  background-color: #5b636d;
+  color: white;
+}

@@ -38,7 +38,7 @@ const CommunityPosts = ({
             <div class="d-inline user-profile">
               posted by{' '}
               <Link
-                to={`/profile/${post.user}`}
+                to={`/profile/${post.post.user}`}
                 style={{
                   textDecorationColor: 'white',
                   color: 'rgba(255, 255, 255, 0.5)'
