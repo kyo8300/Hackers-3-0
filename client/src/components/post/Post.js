@@ -18,9 +18,9 @@ import { Link } from 'react-router-dom';
 
 marked.setOptions({
   langPrefix: 'hljs language-',
-  highlight: function(code) {
+  highlight: function (code) {
     return hljs.highlightAuto(code).value;
-  }
+  },
 });
 
 const Post = ({
@@ -30,13 +30,13 @@ const Post = ({
   showModal,
   post: { post, loading },
   auth,
-  match
+  match,
 }) => {
   useEffect(() => {
     getPost(match.params.id);
   }, [getPost]);
 
-  const authCheck1 = id => {
+  const authCheck1 = (id) => {
     if (!auth.isAuthenticated) {
       showModal();
     } else {
@@ -44,7 +44,7 @@ const Post = ({
     }
   };
 
-  const authCheck2 = id => {
+  const authCheck2 = (id) => {
     if (!auth.isAuthenticated) {
       showModal();
     } else {
@@ -77,7 +77,7 @@ const Post = ({
                 to={`/profile/${post.user}`}
                 style={{
                   textDecorationColor: 'white',
-                  color: 'rgba(255, 255, 255, 0.5)'
+                  color: 'rgba(255, 255, 255, 0.5)',
                 }}
               >
                 {post.name}
@@ -95,7 +95,7 @@ const Post = ({
               {auth.user === null ? (
                 <i class="fas fa-arrow-alt-circle-up arrow-size" />
               ) : post.likes.filter(
-                  like => like.user.toString() === auth.user._id
+                  (like) => like.user.toString() === auth.user._id
                 ).length > 0 ? (
                 <i class="fas fa-arrow-alt-circle-up arrow-size mm" />
               ) : (
@@ -124,7 +124,7 @@ const Post = ({
       </Card>
       <CommentForm postId={post._id} />
       <div className="border-top">
-        {post.comments.map(comment => (
+        {post.comments.map((comment) => (
           <CommentItem key={comment._id} comment={comment} postId={post._id} />
         ))}
       </div>
@@ -137,17 +137,17 @@ Post.propTypes = {
   addLike: PropTypes.func.isRequired,
   removeLike: PropTypes.func.isRequired,
   showModal: PropTypes.func.isRequired,
-  post: PropTypes.object.isRequired
+  post: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   post: state.post,
-  auth: state.auth
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, {
   getPost,
   addLike,
   removeLike,
-  showModal
+  showModal,
 })(Post);

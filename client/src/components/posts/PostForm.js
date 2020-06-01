@@ -15,15 +15,15 @@ import 'highlight.js/styles/railscasts.css';
 
 marked.setOptions({
   langPrefix: 'hljs language-',
-  highlight: function(code) {
+  highlight: function (code) {
     return hljs.highlightAuto(code).value;
-  }
+  },
 });
 
 const PostForm = ({
   addPost,
   getCommunities,
-  community: { communities, loading }
+  community: { communities, loading },
 }) => {
   useEffect(() => {
     getCommunities();
@@ -32,26 +32,24 @@ const PostForm = ({
   const [formData, setFormData] = useState({
     title: '',
     text: '',
-    mycommunity: ''
+    mycommunity: '',
   });
 
   const { title, text, mycommunity } = formData;
 
-  const options = communities.map(community => ({
+  const options = communities.map((community) => ({
     label: community.name,
-    value: community._id
+    value: community._id,
   }));
 
-  const onChange = e =>
+  const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onChangeSelect = (e, name) => {
-    console.log(name);
-    console.log(e.value);
     setFormData({ ...formData, [name]: e.value });
   };
 
-  const onSubmit = e => {
+  const onSubmit = (e) => {
     e.preventDefault();
     addPost({ title, text, mycommunity });
     setFormData({ title: '', text: '', mycommunity: '' });
@@ -61,13 +59,13 @@ const PostForm = ({
     <Loading />
   ) : (
     <Fragment>
-      <Form onSubmit={e => onSubmit(e)}>
+      <Form onSubmit={(e) => onSubmit(e)}>
         <Form.Group className="mt-4 h5">
           <Form.Label>Community</Form.Label>
           <Select
             options={options}
             name="mycommunity"
-            onChange={e => onChangeSelect(e, 'mycommunity')}
+            onChange={(e) => onChangeSelect(e, 'mycommunity')}
             className="text-dark icon"
             placeholder="&#xf002; Search communities..."
             required
@@ -81,7 +79,7 @@ const PostForm = ({
             placeholder="Title"
             name="title"
             value={title}
-            onChange={e => onChange(e)}
+            onChange={(e) => onChange(e)}
             required
           />
         </Form.Group>
@@ -94,7 +92,7 @@ const PostForm = ({
                 size="sm"
                 name="text"
                 value={text}
-                onChange={e => onChange(e)}
+                onChange={(e) => onChange(e)}
                 style={{ height: '500px' }}
                 required
               />
@@ -125,11 +123,11 @@ const PostForm = ({
 PostForm.propTypes = {
   addPost: PropTypes.func.isRequired,
   getCommunities: PropTypes.func.isRequired,
-  community: PropTypes.object.isRequired
+  community: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-  community: state.community
+const mapStateToProps = (state) => ({
+  community: state.community,
 });
 
 export default connect(mapStateToProps, { addPost, getCommunities })(PostForm);

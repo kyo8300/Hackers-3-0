@@ -6,11 +6,17 @@ import {
   LIKEorDISLIKE,
   ADD_COMMENT,
   LIKE_OR_DISLIKE_COMMENT,
+  GET_PROFILE,
+  LOGIN_SUCCESS,
+  REGISTER_SUCCESS,
+  GET_COMMUNITY,
 } from '../actions/types';
 const initialState = {
   posts: [],
   post: null,
   loading: true,
+  hasMore: true,
+  skip: 0,
   error: {},
 };
 
@@ -27,14 +33,30 @@ export default function (state = initialState, action) {
     case GET_POST:
       return {
         ...state,
+        posts: [],
+        hasMore: true,
+        skip: 0,
         post: payload,
+        loading: false,
+      };
+    case GET_PROFILE:
+    case REGISTER_SUCCESS:
+    case LOGIN_SUCCESS:
+    case GET_COMMUNITY:
+      return {
+        ...state,
+        posts: [],
+        hasMore: true,
+        skip: 0,
         loading: false,
       };
     case GET_POSTS:
       return {
         ...state,
-        posts: payload,
+        posts: state.posts.concat(payload),
         loading: false,
+        hasMore: payload.length > 0,
+        skip: action.skip,
       };
     case LIKEorDISLIKE:
       return {
@@ -64,6 +86,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         error: payload,
+        hasMore: false,
         loading: false,
       };
     default:

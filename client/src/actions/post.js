@@ -7,15 +7,15 @@ import {
   GET_POST,
   LIKEorDISLIKE,
   ADD_COMMENT,
-  LIKE_OR_DISLIKE_COMMENT
+  LIKE_OR_DISLIKE_COMMENT,
 } from './types';
 
 //Add post
-export const addPost = ({ title, text, mycommunity }) => async dispatch => {
+export const addPost = ({ title, text, mycommunity }) => async (dispatch) => {
   const config = {
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   };
 
   const body = JSON.stringify({ title, text, mycommunity });
@@ -25,92 +25,93 @@ export const addPost = ({ title, text, mycommunity }) => async dispatch => {
 
     dispatch({
       type: ADD_POST,
-      payload: res.data
+      payload: res.data,
     });
 
     dispatch(setAlert('Post Created', 'success'));
   } catch (err) {
     dispatch({
       type: POST_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
+      payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
 };
 
 //Like
-export const addLike = id => async dispatch => {
+export const addLike = (id) => async (dispatch) => {
   try {
     const res = await axios.put(`/api/posts/like/${id}`);
 
     dispatch({
       type: LIKEorDISLIKE,
-      payload: { id, likes: res.data }
+      payload: { id, likes: res.data },
     });
   } catch (err) {
     dispatch({
       type: POST_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
+      payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
 };
 
 //Dislike
-export const removeLike = id => async dispatch => {
+export const removeLike = (id) => async (dispatch) => {
   try {
     const res = await axios.put(`/api/posts/unlike/${id}`);
 
     dispatch({
       type: LIKEorDISLIKE,
-      payload: { id, likes: res.data }
+      payload: { id, likes: res.data },
     });
   } catch (err) {
     dispatch({
       type: POST_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
+      payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
 };
 
 //Get a post
-export const getPost = id => async dispatch => {
+export const getPost = (id) => async (dispatch) => {
   try {
-    const res = await axios.get(`/api/posts/${id}`);
+    const res = await axios.get(`/api/posts/post/${id}`);
 
     dispatch({
       type: GET_POST,
-      payload: res.data
+      payload: res.data,
     });
   } catch (err) {
     dispatch({
       type: POST_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
+      payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
 };
 
 //Get posts
-export const getPosts = () => async dispatch => {
+export const getPosts = (skip = 0) => async (dispatch) => {
   try {
-    const res = await axios.get('/api/posts');
+    const res = await axios.get(`/api/posts/${skip}`);
 
     dispatch({
       type: GET_POSTS,
-      payload: res.data
+      payload: res.data,
+      skip: skip + res.data.length,
     });
   } catch (err) {
     dispatch({
       type: POST_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
+      payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
 };
 
 //Add comment
-export const addComment = (postId, formData) => async dispatch => {
+export const addComment = (postId, formData) => async (dispatch) => {
   const config = {
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   };
 
   try {
@@ -122,20 +123,20 @@ export const addComment = (postId, formData) => async dispatch => {
 
     dispatch({
       type: ADD_COMMENT,
-      payload: res.data
+      payload: res.data,
     });
 
     dispatch(setAlert('Comment Added', 'success'));
   } catch (err) {
     dispatch({
       type: POST_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
+      payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
 };
 
 //Like comment
-export const addLikeComment = (postId, commentId) => async dispatch => {
+export const addLikeComment = (postId, commentId) => async (dispatch) => {
   try {
     const res = await axios.put(
       `/api/posts/comment/like/${postId}/${commentId}`
@@ -143,18 +144,18 @@ export const addLikeComment = (postId, commentId) => async dispatch => {
 
     dispatch({
       type: LIKE_OR_DISLIKE_COMMENT,
-      payload: res.data
+      payload: res.data,
     });
   } catch (err) {
     dispatch({
       type: POST_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
+      payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
 };
 
 //Dislike comment
-export const removeLikeComment = (postId, commentId) => async dispatch => {
+export const removeLikeComment = (postId, commentId) => async (dispatch) => {
   try {
     const res = await axios.put(
       `/api/posts/comment/dislike/${postId}/${commentId}`
@@ -162,12 +163,12 @@ export const removeLikeComment = (postId, commentId) => async dispatch => {
 
     dispatch({
       type: LIKE_OR_DISLIKE_COMMENT,
-      payload: res.data
+      payload: res.data,
     });
   } catch (err) {
     dispatch({
       type: POST_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
+      payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
 };
