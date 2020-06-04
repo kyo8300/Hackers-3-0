@@ -1,9 +1,12 @@
 const express = require('express');
 const app = express();
 const connectDB = require('./config/db');
+const mockData = require('./config/mockdata');
 
 // Cennect Database
 connectDB();
+
+//mockData();
 
 //Init middleware
 app.use(express.json({ extended: false }));
