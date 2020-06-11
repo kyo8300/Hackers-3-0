@@ -10,8 +10,8 @@ import CommunityPosts from './CommunityPosts';
 
 const Community = ({
   getCommunity,
-  community: { community, loading },
-  match
+  community: { community, loading, hasMore, skip },
+  match,
 }) => {
   useEffect(() => {
     getCommunity(match.params.id);
@@ -25,7 +25,12 @@ const Community = ({
         <Card border="primary">Space</Card>
       </Col>
       <Col lg={6}>
-        <CommunityPosts posts={community.posts} />
+        <CommunityPosts
+          posts={community.posts}
+          skip={skip}
+          hasMore={hasMore}
+          communityid={match.params.id}
+        />
       </Col>
       <Col lg={4}>
         <Card border="primary">Tag</Card>
@@ -36,13 +41,13 @@ const Community = ({
 
 Community.propTypes = {
   getCommunity: PropTypes.func.isRequired,
-  community: PropTypes.object.isRequired
+  community: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-  community: state.community
+const mapStateToProps = (state) => ({
+  community: state.community,
 });
 
 export default connect(mapStateToProps, {
-  getCommunity
+  getCommunity,
 })(Community);

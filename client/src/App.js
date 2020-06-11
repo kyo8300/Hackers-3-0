@@ -13,6 +13,7 @@ import Post from './components/post/Post';
 import Communities from './components/community/Communities';
 import Community from './components/community/Community';
 import Profile from './components/profile/Profile';
+import UserComments from './components/profile/UserComments';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 //Redux
@@ -41,6 +42,11 @@ const App = () => {
             <Switch>
               <Route exact path="/communities" component={Communities} />
               <Route exact path="/profile/:id" component={Profile} />
+              <Route
+                exact
+                path="/profile/comments/:id"
+                component={UserComments}
+              />
               <Route exact path="/community/:id" component={Community} />
               <Route exact path="/" component={Posts} />
               <Route exact path="/new" component={PostForm} />

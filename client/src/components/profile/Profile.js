@@ -1,25 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Tab, Tabs } from 'react-bootstrap';
+import { Nav } from 'react-bootstrap';
 import Moment from 'react-moment';
 
 import { getProfile } from '../../actions/profile';
 import Loading from '../layouts/Loading';
 import UserPosts from './UserPosts';
-import UserComments from './UserComments';
 
 const Profile = ({
   getProfile,
-  profile: { profile, loading },
-  auth: { user, isAuthenticated },
+  profile: { profile, loading, hasMore, skip, sort },
   match,
 }) => {
   useEffect(() => {
-    getProfile(match.params.id);
+    getProfile(match.params.id, 0, 1);
   }, [getProfile]);
-
-  const [key, setKey] = useState('posts');
 
   return loading || profile == null ? (
     <Loading />
@@ -42,7 +38,33 @@ const Profile = ({
       </div>
 
       <div>
-        <Tabs
+        <Nav
+          className="justify-content-center profile-navs mt-4 mb-3"
+          variant="tabs"
+          activeKey={`/profile/${match.params.id}`}
+        >
+          <Nav.Item>
+            <Nav.Link href={`/profile/${match.params.id}`} className="nav-item">
+              POSTS
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link
+              href={`/profile/comments/${match.params.id}`}
+              className="nav-item"
+            >
+              COMMENTS
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
+        <UserPosts
+          posts={profile.posts}
+          userid={profile.user._id}
+          hasMore={hasMore}
+          skip={skip}
+          sort={sort}
+        />
+        {/* <Tabs
           defaultActiveKey="profile"
           id="uncontrolled-tab-example"
           activeKey={key}
@@ -50,15 +72,25 @@ const Profile = ({
           className="justify-content-center profile-navs mt-4 mb-3"
         >
           <Tab eventKey="posts" title="POSTS">
-            <UserPosts posts={profile.posts} userid={profile.user._id} />
-          </Tab>
-          <Tab eventKey="comments" title="COMMENTS">
-            <UserComments
-              comments={profile.comments}
-              userid2={profile.user._id}
+            <UserPosts
+              posts={profile.posts}
+              userid={profile.user._id}
+              hasMore={hasMore}
+              skip={skip}
+              sort={sort}
             />
           </Tab>
-        </Tabs>
+            <Tab eventKey="comments" title="COMMENTS">
+              <p>AAA</p>
+              <UserComments
+              comments={profile.comments}
+              userid2={profile.user._id}
+              hasMore={hasMoreComments}
+              skip={skip}
+              sort={sort}
+            />
+            </Tab>
+        </Tabs> */}
       </div>
     </div>
   );
@@ -66,7 +98,6 @@ const Profile = ({
 
 const mapStateToProps = (state) => ({
   profile: state.profile,
-  auth: state.auth,
 });
 
 Profile.propTypes = {

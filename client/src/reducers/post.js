@@ -48,7 +48,7 @@ export default function (state = initialState, action) {
         posts: [],
         hasMore: true,
         skip: 0,
-        loading: false,
+        loading: true,
       };
     case GET_POSTS:
       return {

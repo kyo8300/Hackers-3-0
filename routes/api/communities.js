@@ -29,9 +29,9 @@ router.get('/', async (req, res) => {
 // @access   Private
 router.get('/:id', async (req, res) => {
   try {
-    const community = await Community.findById(
-      req.params.id
-    ).populate('posts.post', ['name', 'title', 'likes', 'user']);
+    const community = await Community.findById(req.params.id, {
+      posts: { $slice: [Number(req.query.skip), 3] },
+    }).populate('posts.post', ['name', 'title', 'likes', 'user']);
 
     if (!community) {
       return res.status(404).json({ msg: 'Community not found' });
@@ -52,14 +52,7 @@ router.get('/:id', async (req, res) => {
 // @access   Private
 router.post(
   '/create',
-  [
-    auth,
-    [
-      check('name', 'Name is required')
-        .not()
-        .isEmpty()
-    ]
-  ],
+  [auth, [check('name', 'Name is required').not().isEmpty()]],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -71,8 +64,8 @@ router.post(
         name: req.body.name,
         avatar: {
           data: fs.readFileSync(jsimg),
-          contentType: 'img/png'
-        }
+          contentType: 'img/png',
+        },
       });
 
       const community = await newCommunity.save();
@@ -95,7 +88,7 @@ router.put('/follow/:id', auth, async (req, res) => {
     // Check if the post has already been liked
     if (
       community.followers.filter(
-        follower => follower.user.toString() === req.user.id
+        (follower) => follower.user.toString() === req.user.id
       ).length > 0
     ) {
       return res.status(400).json({ msg: 'The user already has followed' });
@@ -122,7 +115,7 @@ router.put('/unfollow/:id', auth, async (req, res) => {
     // Check if the post has already been liked
     if (
       community.followers.filter(
-        follower => follower.user.toString() === req.user.id
+        (follower) => follower.user.toString() === req.user.id
       ).length === 0
     ) {
       return res
@@ -132,7 +125,7 @@ router.put('/unfollow/:id', auth, async (req, res) => {
 
     // Get remove index
     const removeIndex = community.followers
-      .map(follower => follower.user.toString())
+      .map((follower) => follower.user.toString())
       .indexOf(req.user.id);
 
     community.followers.splice(removeIndex, 1);
