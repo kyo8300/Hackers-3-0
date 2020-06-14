@@ -5,9 +5,11 @@ import {
   ADD_POST,
   GET_POSTS,
   GET_POST,
+  POSTS_SEARCH,
   LIKEorDISLIKE,
   ADD_COMMENT,
   LIKE_OR_DISLIKE_COMMENT,
+  INIT_POSTS,
 } from './types';
 
 //Add post
@@ -164,6 +166,39 @@ export const removeLikeComment = (postId, commentId) => async (dispatch) => {
     dispatch({
       type: LIKE_OR_DISLIKE_COMMENT,
       payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+//Get search posts
+export const getPostsSearch = (skip = 0) => async (dispatch) => {
+  try {
+    const q = window.location.search.substring(3);
+    const res = await axios.get(`/api/posts/posts/search/?q=${q}&skip=${skip}`);
+
+    dispatch({
+      type: POSTS_SEARCH,
+      payload: res.data,
+      skip: skip + res.data.length,
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+//Get search posts
+export const initPosts = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: INIT_POSTS,
     });
   } catch (err) {
     dispatch({

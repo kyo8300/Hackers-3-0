@@ -12,8 +12,10 @@ export const ADD_POST = 'ADD_POST';
 export const POST_ERROR = 'POST_ERROR';
 export const GET_POSTS = 'GET_POSTS';
 export const GET_POST = 'GET_POST';
+export const POSTS_SEARCH = 'POSTS_SEARCH';
 export const LIKEorDISLIKE = 'LIKEorDISLIKE';
 export const ADD_COMMENT = 'ADD_COMMENT';
+export const INIT_POSTS = 'INIT_POSTS';
 
 export const LIKE_OR_DISLIKE_COMMENT = 'LIKE_OR_DISLIKE_COMMENT';
 

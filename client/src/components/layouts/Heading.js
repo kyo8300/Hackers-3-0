@@ -1,19 +1,24 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Navbar,
-  Nav,
-  NavDropdown,
-  Form,
-  Button,
-  FormControl
-} from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown, Form, FormControl } from 'react-bootstrap';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logout } from '../../actions/auth';
 
+import { useState } from 'react';
+
 const Heading = ({ auth: { isAuthenticated, loading }, logout }) => {
+  const [formSearch, setFormSearch] = useState('');
+
+  const onChange = (e) => {
+    setFormSearch(e.target.value);
+  };
+
+  const onSubmit = () => {
+    setFormSearch('');
+  };
+
   const authLinks = (
     <Nav>
       <Link onClick={logout} className="nav-link">
@@ -63,13 +68,19 @@ const Heading = ({ auth: { isAuthenticated, loading }, logout }) => {
             </NavDropdown.Item>
           </NavDropdown>
         </Nav>
-        <Form inline className="mr-3">
+        <Form
+          inline
+          className="mr-3"
+          action="/search"
+          onSubmit={() => onSubmit()}
+        >
           <FormControl
             type="text"
-            placeholder="Search"
+            name="q"
             className="mr-sm-2 my-2"
+            placeholder="Search posts..."
+            onChange={(e) => onChange(e)}
           />
-          <Button variant="outline-success">Search</Button>
         </Form>
         {!loading && (
           <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
@@ -81,11 +92,11 @@ const Heading = ({ auth: { isAuthenticated, loading }, logout }) => {
 
 Heading.propTypes = {
   logout: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-  auth: state.auth
+const mapStateToProps = (state) => ({
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, { logout })(Heading);

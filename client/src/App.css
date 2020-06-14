@@ -287,3 +287,8 @@ a.dropdown-item:hover {
   background-color: #5b636d;
   color: white;
 }
+
+/* no search results */
+.sad-icon {
+  font-size: 65px;
+}

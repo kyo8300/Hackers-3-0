@@ -6,24 +6,22 @@ import BlackLoading from '../layouts/blackLoading';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { getPosts, initPosts, addLike, removeLike } from '../../actions/post';
+import { getPostsSearch, addLike, removeLike } from '../../actions/post';
 import { showModal } from '../../actions/modal';
 
 //無限スクロール
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-const Posts = ({
-  getPosts,
-  initPosts,
-  post: { posts, hasMore, skip },
+const PostsSearch = ({
+  getPostsSearch,
+  post: { posts, hasMore, skip, loading },
   auth: { user, isAuthenticated },
   addLike,
   removeLike,
   showModal,
 }) => {
   useEffect(() => {
-    initPosts();
-    getPosts();
+    getPostsSearch();
   }, []);
 
   const authCheck1 = (id) => {
@@ -42,7 +40,26 @@ const Posts = ({
     }
   };
 
-  return (
+  return !loading && !posts.length ? (
+    <Row>
+      <Col lg={2}>
+        <Card border="primary">Space</Card>
+      </Col>
+      <Col lg={6}>
+        <div className="text-center my-5 ">
+          <i class="fas fa-sad-tear sad-icon py-4" /> <br />
+          <h5>
+            Sorry,there were no results for "
+            {window.location.search.substring(3)}
+            ".
+          </h5>
+        </div>
+      </Col>
+      <Col lg={4}>
+        <Card border="primary">Tag</Card>
+      </Col>
+    </Row>
+  ) : (
     <Row>
       <Col lg={2}>
         <Card border="primary">Space</Card>
@@ -50,7 +67,7 @@ const Posts = ({
       <Col lg={6}>
         <InfiniteScroll
           dataLength={posts.length}
-          next={() => getPosts(skip)}
+          next={() => getPostsSearch(skip)}
           hasMore={hasMore}
           loader={<BlackLoading />}
           endMessage={<div>End!!</div>}
@@ -145,9 +162,8 @@ const Posts = ({
   );
 };
 
-Posts.propTypes = {
-  getPosts: PropTypes.func.isRequired,
-  initPosts: PropTypes.func.isRequired,
+PostsSearch.propTypes = {
+  getPostsSearch: PropTypes.func.isRequired,
   addLike: PropTypes.func.isRequired,
   removeLike: PropTypes.func.isRequired,
   showModal: PropTypes.func.isRequired,
@@ -161,9 +177,8 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  getPosts,
-  initPosts,
+  getPostsSearch,
   addLike,
   removeLike,
   showModal,
-})(Posts);
+})(PostsSearch);

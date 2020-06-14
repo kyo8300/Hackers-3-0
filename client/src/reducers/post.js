@@ -10,6 +10,8 @@ import {
   LOGIN_SUCCESS,
   REGISTER_SUCCESS,
   GET_COMMUNITY,
+  POSTS_SEARCH,
+  INIT_POSTS,
 } from '../actions/types';
 const initialState = {
   posts: [],
@@ -43,6 +45,7 @@ export default function (state = initialState, action) {
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
     case GET_COMMUNITY:
+    case INIT_POSTS:
       return {
         ...state,
         posts: [],
@@ -51,6 +54,7 @@ export default function (state = initialState, action) {
         loading: true,
       };
     case GET_POSTS:
+    case POSTS_SEARCH:
       return {
         ...state,
         posts: state.posts.concat(payload),

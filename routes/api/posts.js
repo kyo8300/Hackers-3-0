@@ -62,7 +62,7 @@ router.post(
   }
 );
 
-// @route    POST /posts/:skip
+// @route    get /posts/:skip
 // @desc     Get all posts
 // @access   Public
 router.get('/:skip', async (req, res) => {
@@ -99,6 +99,30 @@ router.get('/post/:id', async (req, res) => {
     if (err.kind === 'ObjectId') {
       return res.status(404).json({ msg: 'Post not found' });
     }
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    get /posts/search?q=q&skip=skip
+// @desc     Get searched posts
+// @access   Public
+router.get('/posts/search/', async (req, res) => {
+  try {
+    const posts = await Post.find()
+      .sort({ date: -1 })
+      .populate('community', ['name', 'avatar']);
+
+    const searchedPost = posts.filter((post) =>
+      new RegExp(`^${req.query.q}`, 'i').test(post.title)
+    );
+
+    const tmp = searchedPost.splice(Number(req.query.skip), 3);
+    searchedPost.splice(0);
+    Array.prototype.push.apply(searchedPost, tmp);
+
+    res.json(searchedPost);
+  } catch (err) {
+    console.error(err.message);
     res.status(500).send('Server Error');
   }
 });
