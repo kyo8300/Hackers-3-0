@@ -4,6 +4,7 @@ import {
   JOIN_COMMUNITY,
   COMMUNITY_ERROR,
   GET_COMMUNITY,
+  INIT_COMMUNITY,
 } from './types';
 
 //Get communities
@@ -31,7 +32,22 @@ export const getCommunity = (id, skip = 0) => async (dispatch) => {
     dispatch({
       type: GET_COMMUNITY,
       payload: res.data,
-      skip: skip + res.data.posts.length,
+      skip: skip + res.data.community.posts.length,
+    });
+  } catch (err) {
+    console.log(err);
+    dispatch({
+      type: COMMUNITY_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+//Initialize community
+export const initCommunity = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: INIT_COMMUNITY,
     });
   } catch (err) {
     console.log(err);

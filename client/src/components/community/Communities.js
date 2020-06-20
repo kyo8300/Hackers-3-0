@@ -1,7 +1,7 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Loading from '../layouts/Loading';
-import { Card, Button } from 'react-bootstrap';
+import { Card, Button, Form } from 'react-bootstrap';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -10,7 +10,7 @@ import { showModal } from '../../actions/modal';
 import {
   getCommunities,
   joinCommunity,
-  leaveCommunity
+  leaveCommunity,
 } from '../../actions/community';
 
 const Communities = ({
@@ -19,13 +19,13 @@ const Communities = ({
   leaveCommunity,
   showModal,
   community: { communities, loading },
-  auth: { user, isAuthenticated }
+  auth: { user, isAuthenticated },
 }) => {
   useEffect(() => {
     getCommunities();
   }, [getCommunities]);
 
-  const authCheck1 = id => {
+  const authCheck1 = (id) => {
     if (!isAuthenticated) {
       showModal();
     } else {
@@ -33,7 +33,7 @@ const Communities = ({
     }
   };
 
-  const authCheck2 = id => {
+  const authCheck2 = (id) => {
     if (!isAuthenticated) {
       showModal();
     } else {
@@ -44,8 +44,23 @@ const Communities = ({
   return loading || communities === null ? (
     <Loading />
   ) : (
-    <Fragment>
-      {communities.map(community => (
+    <div className="mb-4">
+      <div className="community-title p-3 py-2 my-3">
+        <h3 className="mb-1">Communities</h3>
+        <p className="text-white-50 community-subtitle">
+          What are your interests ? Find your favorite communities !!
+        </p>
+      </div>
+      <Form className="search-community-bar float-right">
+        <Form.Group>
+          <Form.Control
+            size="sm"
+            type="text"
+            placeholder="Search community..."
+          />
+        </Form.Group>
+      </Form>
+      {communities.map((community) => (
         <Card className="community-card">
           <Card.Body>
             <img
@@ -81,7 +96,7 @@ const Communities = ({
                 Join
               </Button>
             ) : community.followers.filter(
-                follower => follower.user.toString() === user._id
+                (follower) => follower.user.toString() === user._id
               ).length > 0 ? (
               <Button
                 variant="outline-light"
@@ -100,7 +115,7 @@ const Communities = ({
           </Card.Body>
         </Card>
       ))}
-    </Fragment>
+    </div>
   );
 };
 
@@ -108,17 +123,17 @@ Communities.propTypes = {
   getCommunities: PropTypes.func.isRequired,
   joinCommunity: PropTypes.func.isRequired,
   showModal: PropTypes.func.isRequired,
-  leaveCommunity: PropTypes.func.isRequired
+  leaveCommunity: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   community: state.community,
-  auth: state.auth
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, {
   getCommunities,
   leaveCommunity,
   joinCommunity,
-  showModal
+  showModal,
 })(Communities);

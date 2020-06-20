@@ -3,16 +3,14 @@ import {
   GET_COMMUNITY,
   JOIN_COMMUNITY,
   COMMUNITY_ERROR,
-  GET_POSTS,
-  GET_POST,
-  GET_PROFILE,
-  LOGIN_SUCCESS,
-  REGISTER_SUCCESS,
+  INIT_COMMUNITY,
+  LIKEorDISLIKE,
 } from '../actions/types';
 
 const initialState = {
   communities: [],
   community: { posts: [] },
+  totalPosts: 0,
   loading: true,
   hasMore: true,
   skip: 0,
@@ -32,10 +30,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         community: {
-          ...payload,
-          posts: state.community.posts.concat(payload.posts),
+          ...payload.community,
+          posts: state.community.posts.concat(payload.community.posts),
         },
-        hasMore: payload.posts.length > 0,
+        hasMore: payload.community.posts.length > 0,
+        totalPosts: payload.postsLength,
         skip: action.skip,
         loading: false,
       };
@@ -47,6 +46,10 @@ export default function (state = initialState, action) {
             ? { ...community, followers: payload.followers }
             : community
         ),
+        community: {
+          ...state.community,
+          followers: payload.followers,
+        },
         loading: false,
       };
     case COMMUNITY_ERROR:
@@ -55,17 +58,26 @@ export default function (state = initialState, action) {
         error: payload,
         loading: false,
       };
-    case GET_POSTS:
-    case GET_POST:
-    case GET_PROFILE:
-    case LOGIN_SUCCESS:
-    case REGISTER_SUCCESS:
+    case INIT_COMMUNITY:
       return {
         ...state,
         community: { posts: [] },
         loading: true,
         hasMore: true,
         skip: 0,
+      };
+    case LIKEorDISLIKE:
+      return {
+        ...state,
+        community: {
+          ...state.community,
+          posts: state.community.posts.map((post) =>
+            post.post._id === payload.id
+              ? { ...post, post: { ...post.post, likes: payload.likes } }
+              : post
+          ),
+        },
+        loading: false,
       };
 
     default:

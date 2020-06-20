@@ -23,6 +23,7 @@ export const GET_COMMUNITIES = 'GET_COMMUNITIES';
 export const GET_COMMUNITY = 'GET_COMMUNITY';
 export const JOIN_COMMUNITY = 'JOIN_COMMUNITY';
 export const COMMUNITY_ERROR = 'COMMUNITY_ERROR';
+export const INIT_COMMUNITY = 'INIT_COMMUNITY';
 
 export const SHOW_MODAL = 'SHOW_MODAL';
 export const HIDE_MODAL = 'HIDE_MODAL';

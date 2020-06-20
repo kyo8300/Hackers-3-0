@@ -6,10 +6,6 @@ import {
   LIKEorDISLIKE,
   ADD_COMMENT,
   LIKE_OR_DISLIKE_COMMENT,
-  GET_PROFILE,
-  LOGIN_SUCCESS,
-  REGISTER_SUCCESS,
-  GET_COMMUNITY,
   POSTS_SEARCH,
   INIT_POSTS,
 } from '../actions/types';
@@ -41,10 +37,6 @@ export default function (state = initialState, action) {
         post: payload,
         loading: false,
       };
-    case GET_PROFILE:
-    case REGISTER_SUCCESS:
-    case LOGIN_SUCCESS:
-    case GET_COMMUNITY:
     case INIT_POSTS:
       return {
         ...state,

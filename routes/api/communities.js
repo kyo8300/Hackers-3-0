@@ -33,11 +33,14 @@ router.get('/:id', async (req, res) => {
       posts: { $slice: [Number(req.query.skip), 3] },
     }).populate('posts.post', ['name', 'title', 'likes', 'user']);
 
+    const tmp = await Community.findById(req.params.id).populate('posts.post');
+    const postsLength = tmp.posts.length;
+
     if (!community) {
       return res.status(404).json({ msg: 'Community not found' });
     }
 
-    res.json(community);
+    res.json({ community: community, postsLength: postsLength });
   } catch (err) {
     console.error(err.message);
     if (err.kind === 'ObjectId') {

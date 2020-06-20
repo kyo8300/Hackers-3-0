@@ -40,7 +40,7 @@ const Heading = ({ auth: { isAuthenticated, loading }, logout }) => {
   );
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar bg="dark" variant="dark" expand="lg" className="nav-header">
       <Link to="/" className="navbar-brand">
         <img
           src="../../../hackers.png"
