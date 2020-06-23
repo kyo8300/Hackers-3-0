@@ -21,9 +21,9 @@ const Heading = ({ auth: { isAuthenticated, loading }, logout }) => {
 
   const authLinks = (
     <Nav>
-      <Link onClick={logout} className="nav-link">
+      <a onClick={logout} className="nav-link">
         Logout
-      </Link>
+      </a>
     </Nav>
   );
 
@@ -47,7 +47,7 @@ const Heading = ({ auth: { isAuthenticated, loading }, logout }) => {
           width="30"
           height="40"
           alt="Logo"
-          class="mr-2"
+          className="mr-2"
         />
         Hackers 3.0
       </Link>

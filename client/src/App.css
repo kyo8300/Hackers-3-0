@@ -329,3 +329,26 @@ a.dropdown-item:hover {
 .community-header-img {
   background-color: #2c2c2c !important;
 }
+
+/* community autocomplete*/
+.react-autosuggest__suggestions-list {
+  list-style: none;
+  padding-left: 5px;
+  margin-bottom: 0;
+}
+
+.suggestion-input {
+  text-decoration-color: white !important;
+}
+
+input.form-group {
+  margin-bottom: 0;
+}
+
+.react-autosuggest__suggestions-container--open {
+  width: 182px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #343a40;
+  border: solid thin rgba(255, 255, 255, 0.5);
+}

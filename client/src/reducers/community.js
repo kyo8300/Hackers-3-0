@@ -2,6 +2,7 @@ import {
   GET_COMMUNITIES,
   GET_COMMUNITY,
   JOIN_COMMUNITY,
+  GET_SUGGESTIONS,
   COMMUNITY_ERROR,
   INIT_COMMUNITY,
   LIKEorDISLIKE,
@@ -10,6 +11,7 @@ import {
 const initialState = {
   communities: [],
   community: { posts: [] },
+  autocomplete: [],
   totalPosts: 0,
   loading: true,
   hasMore: true,
@@ -77,6 +79,12 @@ export default function (state = initialState, action) {
               : post
           ),
         },
+        loading: false,
+      };
+    case GET_SUGGESTIONS:
+      return {
+        ...state,
+        autocomplete: payload,
         loading: false,
       };
 

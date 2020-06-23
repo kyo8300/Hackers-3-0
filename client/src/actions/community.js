@@ -5,6 +5,7 @@ import {
   COMMUNITY_ERROR,
   GET_COMMUNITY,
   INIT_COMMUNITY,
+  GET_SUGGESTIONS,
 } from './types';
 
 //Get communities
@@ -83,6 +84,23 @@ export const leaveCommunity = (id) => async (dispatch) => {
     dispatch({
       type: JOIN_COMMUNITY,
       payload: { id, followers: res.data },
+    });
+  } catch (err) {
+    dispatch({
+      type: COMMUNITY_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+// Get community suggestions
+export const getSuggestions = (value) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/communities/suggestions/?q=${value}`);
+
+    dispatch({
+      type: GET_SUGGESTIONS,
+      payload: res.data,
     });
   } catch (err) {
     dispatch({

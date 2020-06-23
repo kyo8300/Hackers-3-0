@@ -24,6 +24,30 @@ router.get('/', async (req, res) => {
   }
 });
 
+// @route    POST api/communities/suggestions
+// @desc     Get community suggestion
+// @access   Public
+router.get('/suggestions', async (req, res) => {
+  try {
+    const communities = await Community.find().select('-posts -followers');
+    const inputValue = req.query.q;
+    const inputLength = inputValue.length;
+
+    const suggestions =
+      inputLength === 0
+        ? []
+        : communities.filter(
+            (community) =>
+              community.name.toLowerCase().slice(0, inputLength) === inputValue
+          );
+
+    res.json(suggestions);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route    POST api/communities/:id
 // @desc     Get community
 // @access   Private
