@@ -21,9 +21,11 @@ const Heading = ({ auth: { isAuthenticated, loading }, logout }) => {
 
   const authLinks = (
     <Nav>
-      <a onClick={logout} className="nav-link">
-        Logout
-      </a>
+      <Nav.Link href="/new" className="create-post-button">
+        <i class="fas fa-paper-plane mr-1" />
+        Create Post
+      </Nav.Link>
+      <Nav.Link onClick={logout}>Logout</Nav.Link>
     </Nav>
   );
 
@@ -54,8 +56,14 @@ const Heading = ({ auth: { isAuthenticated, loading }, logout }) => {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link href="#home">Timeline</Nav.Link>
-          <Nav.Link href="/communities">Communities</Nav.Link>
+          <Nav.Link href="/">
+            <i class="fas fa-stream mr-1" />
+            Timeline
+          </Nav.Link>
+          <Nav.Link href="/communities">
+            <i class="fas fa-building mr-1" />
+            Communities
+          </Nav.Link>
           <NavDropdown title="Dropdown" id="basic-nav-dropdown">
             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
             <NavDropdown.Item href="#action/3.2">

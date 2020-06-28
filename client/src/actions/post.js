@@ -10,6 +10,7 @@ import {
   ADD_COMMENT,
   LIKE_OR_DISLIKE_COMMENT,
   INIT_POSTS,
+  GET_FOLLOWING_POSTS,
 } from './types';
 
 //Add post
@@ -91,14 +92,36 @@ export const getPost = (id) => async (dispatch) => {
 };
 
 //Get posts
-export const getPosts = (skip = 0) => async (dispatch) => {
+export const getPosts = (skip = 0, sort) => async (dispatch) => {
   try {
-    const res = await axios.get(`/api/posts/${skip}`);
+    const res = await axios.get(`/api/posts/?skip=${skip}&sort=${sort}`);
 
     dispatch({
       type: GET_POSTS,
       payload: res.data,
       skip: skip + res.data.length,
+      sort: sort,
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+//Get following posts
+export const getFollowingPosts = (skip = 0, sort) => async (dispatch) => {
+  try {
+    const res = await axios.get(
+      `/api/posts/following/home/?skip=${skip}&sort=${sort}`
+    );
+
+    dispatch({
+      type: GET_FOLLOWING_POSTS,
+      payload: res.data,
+      skip: skip + res.data.length,
+      sort: sort,
     });
   } catch (err) {
     dispatch({

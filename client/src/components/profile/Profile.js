@@ -4,16 +4,18 @@ import { connect } from 'react-redux';
 import { Nav } from 'react-bootstrap';
 import Moment from 'react-moment';
 
-import { getProfile } from '../../actions/profile';
+import { getProfile, initProfile } from '../../actions/profile';
 import Loading from '../layouts/Loading';
 import UserPosts from './UserPosts';
 
 const Profile = ({
   getProfile,
+  initProfile,
   profile: { profile, loading, hasMore, skip, sort },
   match,
 }) => {
   useEffect(() => {
+    initProfile();
     getProfile(match.params.id, 0, 1);
   }, [getProfile]);
 
@@ -102,7 +104,8 @@ const mapStateToProps = (state) => ({
 
 Profile.propTypes = {
   getProfile: PropTypes.func.isRequired,
+  initProfile: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
 };
 
-export default connect(mapStateToProps, { getProfile })(Profile);
+export default connect(mapStateToProps, { getProfile, initProfile })(Profile);

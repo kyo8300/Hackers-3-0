@@ -15,6 +15,7 @@ import Community from './components/community/Community';
 import Profile from './components/profile/Profile';
 import UserComments from './components/profile/UserComments';
 import PostsSearch from './components/posts/PostsSearch';
+import FollowingPosts from './components/posts/FollowingPosts';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 //Redux
@@ -49,7 +50,8 @@ const App = () => {
                 component={UserComments}
               />
               <Route exact path="/community/:id" component={Community} />
-              <Route exact path="/" component={Posts} />
+              <Route exact path="/global" component={Posts} />
+              <Route exact path="/" component={FollowingPosts} />
               <Route exact path="/new" component={PostForm} />
               <Route exact path="/search" component={PostsSearch} />
               <Route exact path="/posts/:id" component={Post} />

@@ -8,6 +8,7 @@ import {
   LIKE_OR_DISLIKE_COMMENT,
   POSTS_SEARCH,
   INIT_POSTS,
+  GET_FOLLOWING_POSTS,
 } from '../actions/types';
 const initialState = {
   posts: [],
@@ -15,6 +16,7 @@ const initialState = {
   loading: true,
   hasMore: true,
   skip: 0,
+  sort: 1,
   error: {},
 };
 
@@ -25,7 +27,7 @@ export default function (state = initialState, action) {
     case ADD_POST:
       return {
         ...state,
-        posts: [payload, ...state.posts],
+        // posts: [payload, ...state.posts],
         loading: false,
       };
     case GET_POST:
@@ -43,16 +45,19 @@ export default function (state = initialState, action) {
         posts: [],
         hasMore: true,
         skip: 0,
+        sort: 1,
         loading: true,
       };
     case GET_POSTS:
     case POSTS_SEARCH:
+    case GET_FOLLOWING_POSTS:
       return {
         ...state,
         posts: state.posts.concat(payload),
         loading: false,
         hasMore: payload.length > 0,
         skip: action.skip,
+        sort: action.sort,
       };
     case LIKEorDISLIKE:
       return {

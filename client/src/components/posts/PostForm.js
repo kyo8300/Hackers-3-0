@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Row, Col, Button, Form } from 'react-bootstrap';
 import Select from 'react-select';
+import { Redirect } from 'react-router-dom';
 
 import { getCommunities } from '../../actions/community';
 import { addPost } from '../../actions/post';
@@ -24,6 +25,7 @@ const PostForm = ({
   addPost,
   getCommunities,
   community: { communities, loading },
+  auth,
 }) => {
   useEffect(() => {
     getCommunities();
@@ -55,6 +57,8 @@ const PostForm = ({
     setFormData({ title: '', text: '', mycommunity: '' });
   };
 
+  if (!auth.isAuthenticated && !auth.loading) return <Redirect to="/" />;
+
   return loading || communities === null ? (
     <Loading />
   ) : (
@@ -84,7 +88,7 @@ const PostForm = ({
           />
         </Form.Group>
         <Row>
-          <Col>
+          <Col style={{ width: '50%' }}>
             <Form.Group controlId="exampleForm.ControlTextarea1">
               <Form.Label className="h5">Body</Form.Label>
               <Form.Control
@@ -94,15 +98,16 @@ const PostForm = ({
                 value={text}
                 onChange={(e) => onChange(e)}
                 style={{ height: '500px' }}
+                className="text-break"
                 required
               />
             </Form.Group>
           </Col>
-          <Col>
+          <Col style={{ width: '50%' }}>
             <label class="h5">Preview</label>
             <div
               dangerouslySetInnerHTML={{ __html: marked(text) }}
-              className="border overflow-auto bg-transparent"
+              className="border overflow-auto bg-transparent text-break"
               style={{ height: '500px' }}
             />
           </Col>
@@ -128,6 +133,7 @@ PostForm.propTypes = {
 
 const mapStateToProps = (state) => ({
   community: state.community,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, { addPost, getCommunities })(PostForm);

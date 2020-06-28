@@ -65,14 +65,78 @@ router.post(
 // @route    get /posts/:skip
 // @desc     Get all posts
 // @access   Public
-router.get('/:skip', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const posts = await Post.find()
       .sort({ date: -1 })
-      .populate('community', ['name', 'avatar'])
-      .skip(Number(req.params.skip))
-      .limit(3);
+      .populate('community', ['name', 'avatar']);
+
+    // 1 == Sort by new post, 2 == Sort by likes algorithm
+    if (Number(req.query.sort) === 1) {
+      //Posts
+      const tmp = posts.splice(Number(req.query.skip), 3);
+      posts.splice(0);
+      Array.prototype.push.apply(posts, tmp);
+    } else if (Number(req.query.sort) === 2) {
+      posts.sort(function (a, b) {
+        const now = new Date();
+        const aDate = (now - a.date) / (1000 * 60 * 60);
+        const bDate = (now - b.date) / (1000 * 60 * 60);
+
+        const aTotalScore = ((a.likes.length - 1) / (aDate + 2)) * 1.8;
+        const bTotalScore = ((b.likes.length - 1) / (bDate + 2)) * 1.8;
+        return bTotalScore - aTotalScore;
+      });
+      const tmp = posts.splice(Number(req.query.skip), 3);
+      posts.splice(0);
+      Array.prototype.push.apply(posts, tmp);
+    }
     res.json(posts);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    get /posts/following/:skip
+// @desc     Get following posts
+// @access   private
+router.get('/following/home', auth, async (req, res) => {
+  try {
+    const followingPosts = [];
+    const posts = await Post.find()
+      .sort({ date: -1 })
+      .populate('community', ['name', 'avatar', 'followers']);
+
+    posts.filter((post) => {
+      post.community.followers.forEach((follower) => {
+        if (follower.user == req.user.id) followingPosts.push(post);
+      });
+    });
+
+    // 1 == Sort by new post, 2 == Sort by likes algorithm
+    if (Number(req.query.sort) === 1) {
+      //Posts
+      const tmp = followingPosts.splice(Number(req.query.skip), 3);
+      followingPosts.splice(0);
+      Array.prototype.push.apply(followingPosts, tmp);
+    } else if (Number(req.query.sort) === 2) {
+      followingPosts.sort(function (a, b) {
+        const now = new Date();
+        const aDate = (now - a.date) / (1000 * 60 * 60);
+        const bDate = (now - b.date) / (1000 * 60 * 60);
+
+        const aTotalScore = ((a.likes.length - 1) / (aDate + 2)) * 1.8;
+        const bTotalScore = ((b.likes.length - 1) / (bDate + 2)) * 1.8;
+        return bTotalScore - aTotalScore;
+      });
+      const tmp = followingPosts.splice(Number(req.query.skip), 3);
+      followingPosts.splice(0);
+      Array.prototype.push.apply(followingPosts, tmp);
+    }
+
+    // console.log(followingPosts);
+    res.json(followingPosts);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
