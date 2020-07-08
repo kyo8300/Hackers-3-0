@@ -1,23 +1,24 @@
-import React, { useEffect, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { getPost, addLike, removeLike } from '../../actions/post';
-import { showModal } from '../../actions/modal';
-import CommentForm from '../post/CommentForm';
-import CommentItem from '../post/CommentItem';
-import Moment from 'react-moment';
-import { Card } from 'react-bootstrap';
+import React, { useEffect, Fragment } from "react";
+import PropTypes from "prop-types";
+import { getPost, addLike, removeLike, deletePost } from "../../actions/post";
+import { showModal } from "../../actions/modal";
+import CommentForm from "../post/CommentForm";
+import CommentItem from "../post/CommentItem";
+import Moment from "react-moment";
+import { Card, Button } from "react-bootstrap";
+import { Redirect, useHistory } from "react-router-dom";
 
 //Markdown
-import marked from 'marked';
-import hljs from 'highlight.js';
-import 'highlight.js/styles/railscasts.css';
+import marked from "marked";
+import hljs from "highlight.js";
+import "highlight.js/styles/railscasts.css";
 
-import { connect } from 'react-redux';
-import Loading from '../layouts/Loading';
-import { Link } from 'react-router-dom';
+import { connect } from "react-redux";
+import Loading from "../layouts/Loading";
+import { Link } from "react-router-dom";
 
 marked.setOptions({
-  langPrefix: 'hljs language-',
+  langPrefix: "hljs language-",
   highlight: function (code) {
     return hljs.highlightAuto(code).value;
   },
@@ -27,6 +28,7 @@ const Post = ({
   getPost,
   addLike,
   removeLike,
+  deletePost,
   showModal,
   post: { post, loading },
   auth,
@@ -52,6 +54,8 @@ const Post = ({
     }
   };
 
+  const history = useHistory();
+
   return loading || post === null ? (
     <Loading />
   ) : (
@@ -63,27 +67,56 @@ const Post = ({
               <img
                 src={`data:image/png;base64,${Buffer.from(
                   post.community.avatar.data
-                ).toString('base64')}`}
+                ).toString("base64")}`}
                 className="mr-1"
                 width="30px"
                 height="30px"
                 fluid
-              />{' '}
+              />{" "}
               {post.community.name}
             </div>
             <div class="user-profile mt-2">
-              posted by{' '}
+              posted by{" "}
               <Link
                 to={`/profile/${post.user}`}
                 style={{
-                  textDecorationColor: 'white',
-                  color: 'rgba(255, 255, 255, 0.5)',
+                  textDecorationColor: "white",
+                  color: "rgba(255, 255, 255, 0.5)",
                 }}
               >
                 {post.name}
-              </Link>{' '}
-              {'・'} <Moment format="YYYY/MM/DD HH:mm">{post.date}</Moment>
+              </Link>{" "}
+              {"・"} <Moment format="YYYY/MM/DD HH:mm">{post.date}</Moment>
             </div>
+            {auth.isAuthenticated &&
+            !auth.loading &&
+            post.user === auth.user._id ? (
+              <div>
+                {" "}
+                <div className="mt-3">
+                  <Button
+                    variant="outline-secondary mr-1 post-edit-delete-button"
+                    size="sm"
+                    href={`/edit/${post._id}`}
+                  >
+                    Edit post
+                  </Button>{" "}
+                  <Button
+                    variant="outline-danger post-edit-delete-button"
+                    size="sm"
+                    onClick={() =>
+                      window.confirm("Are you sure?")
+                        ? (deletePost(post._id), history.goBack())
+                        : ""
+                    }
+                  >
+                    Delete Post
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
 
           <div className="float-right d-inline">
@@ -113,7 +146,7 @@ const Post = ({
               onClick={() => authCheck2(post._id)}
               class="d-block like-btn mt-1"
             >
-              <i class="fas fa-arrow-alt-circle-down arrow-size" />{' '}
+              <i class="fas fa-arrow-alt-circle-down arrow-size" />{" "}
             </button>
           </div>
         </Card.Header>
@@ -136,6 +169,7 @@ Post.propTypes = {
   getPost: PropTypes.func.isRequired,
   addLike: PropTypes.func.isRequired,
   removeLike: PropTypes.func.isRequired,
+  deletePost: PropTypes.func.isRequired,
   showModal: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired,
 };
@@ -149,5 +183,6 @@ export default connect(mapStateToProps, {
   getPost,
   addLike,
   removeLike,
+  deletePost,
   showModal,
 })(Post);

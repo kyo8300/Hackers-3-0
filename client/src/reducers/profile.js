@@ -3,7 +3,8 @@ import {
   GET_COMMENTS,
   INIT_PROFILE,
   PROFILE_ERROR,
-} from '../actions/types';
+  DELETE_POST,
+} from "../actions/types";
 
 const initialState = {
   profile: { posts: [], comments: [] },
@@ -52,6 +53,17 @@ export default function (state = initialState, action) {
         hasMoreComments: true,
         skip: 0,
         sort: 1,
+      };
+    case DELETE_POST:
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          posts: state.profile.posts.filter(
+            (post) => post.post._id !== payload
+          ),
+        },
+        loading: false,
       };
     case PROFILE_ERROR:
       return {

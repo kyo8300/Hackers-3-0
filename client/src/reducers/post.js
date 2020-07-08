@@ -9,7 +9,9 @@ import {
   POSTS_SEARCH,
   INIT_POSTS,
   GET_FOLLOWING_POSTS,
-} from '../actions/types';
+  DELETE_POST,
+  UPDATE_POST,
+} from "../actions/types";
 const initialState = {
   posts: [],
   post: null,
@@ -28,6 +30,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         // posts: [payload, ...state.posts],
+        loading: false,
+      };
+    case UPDATE_POST:
+      return {
+        ...state,
+        post: payload,
         loading: false,
       };
     case GET_POST:
@@ -58,6 +66,12 @@ export default function (state = initialState, action) {
         hasMore: payload.length > 0,
         skip: action.skip,
         sort: action.sort,
+      };
+    case DELETE_POST:
+      return {
+        ...state,
+        posts: state.posts.filter((post) => post._id !== payload),
+        loading: false,
       };
     case LIKEorDISLIKE:
       return {

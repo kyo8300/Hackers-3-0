@@ -12,6 +12,7 @@ const Profile = ({
   getProfile,
   initProfile,
   profile: { profile, loading, hasMore, skip, sort },
+  auth,
   match,
 }) => {
   useEffect(() => {
@@ -65,6 +66,7 @@ const Profile = ({
           hasMore={hasMore}
           skip={skip}
           sort={sort}
+          auth={auth}
         />
         {/* <Tabs
           defaultActiveKey="profile"
@@ -100,6 +102,7 @@ const Profile = ({
 
 const mapStateToProps = (state) => ({
   profile: state.profile,
+  auth: state.auth,
 });
 
 Profile.propTypes = {

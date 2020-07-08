@@ -1,33 +1,25 @@
-import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import { Navbar, Nav, NavDropdown, Form, FormControl } from 'react-bootstrap';
+import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
+import { Navbar, Nav, NavDropdown, Form, FormControl } from "react-bootstrap";
 
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { logout } from '../../actions/auth';
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { logout } from "../../actions/auth";
 
-import { useState } from 'react';
+import BlackLoading from "../layouts/blackLoading";
 
-const Heading = ({ auth: { isAuthenticated, loading }, logout }) => {
-  const [formSearch, setFormSearch] = useState('');
+import { useState } from "react";
+
+const Heading = ({ auth: { isAuthenticated, loading, user }, logout }) => {
+  const [setFormSearch] = useState("");
 
   const onChange = (e) => {
     setFormSearch(e.target.value);
   };
 
   const onSubmit = () => {
-    setFormSearch('');
+    setFormSearch("");
   };
-
-  const authLinks = (
-    <Nav>
-      <Nav.Link href="/new" className="create-post-button">
-        <i class="fas fa-paper-plane mr-1" />
-        Create Post
-      </Nav.Link>
-      <Nav.Link onClick={logout}>Logout</Nav.Link>
-    </Nav>
-  );
 
   const guestLinks = (
     <Nav>
@@ -57,24 +49,13 @@ const Heading = ({ auth: { isAuthenticated, loading }, logout }) => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           <Nav.Link href="/">
-            <i class="fas fa-stream mr-1" />
+            <i className="fas fa-stream mr-1" />
             Timeline
           </Nav.Link>
           <Nav.Link href="/communities">
-            <i class="fas fa-building mr-1" />
+            <i className="fas fa-building mr-1" />
             Communities
           </Nav.Link>
-          <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">
-              Another action
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/3.4">
-              Separated link
-            </NavDropdown.Item>
-          </NavDropdown>
         </Nav>
         <Form
           inline
@@ -91,7 +72,33 @@ const Heading = ({ auth: { isAuthenticated, loading }, logout }) => {
           />
         </Form>
         {!loading && (
-          <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
+          <Fragment>
+            {isAuthenticated ? (
+              user === null ? (
+                <BlackLoading />
+              ) : (
+                <Nav>
+                  <Nav.Link href="/new" className="create-post-button">
+                    <i className="fas fa-paper-plane mr-1" />
+                    Create Post
+                  </Nav.Link>
+                  <NavDropdown
+                    alignRight
+                    id="dropdown-menu-align-right"
+                    title={<i className="fas fa-user" />}
+                  >
+                    <NavDropdown.Item href={`/profile/${user._id}`}>
+                      My Page
+                    </NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+                  </NavDropdown>
+                </Nav>
+              )
+            ) : (
+              guestLinks
+            )}
+          </Fragment>
         )}
       </Navbar.Collapse>
     </Navbar>

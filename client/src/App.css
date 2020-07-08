@@ -97,7 +97,7 @@ input:focus :-ms-input-placeholder {
   transition: 250ms background ease-in;
 }
 
-[class*='underlay'] {
+[class*="underlay"] {
   left: 0;
   min-height: 100%;
   min-width: 100%;
@@ -107,7 +107,7 @@ input:focus :-ms-input-placeholder {
 
 .underlay-photo {
   animation: hue-rotate 6s infinite;
-  background: url('./dark.jpg');
+  background: url("./dark.jpg");
   background-size: cover;
   z-index: -1;
 }
@@ -243,15 +243,15 @@ input:focus :-ms-input-placeholder {
 }
 
 .leave-hover:after {
-  content: 'Joined';
+  content: "Joined";
 }
 
 .leave-hover:hover:after {
-  content: 'Leave';
+  content: "Leave";
 }
 
 .icon {
-  font-family: 'Font Awesome 5 Free'; /*←ココ！！！！！！！*/
+  font-family: "Font Awesome 5 Free"; /*←ココ！！！！！！！*/
   font-weight: 900;
   font-size: medium;
 }
@@ -305,6 +305,19 @@ a.dropdown-item {
 a.dropdown-item:hover {
   background-color: #5b636d;
   color: white;
+}
+
+.user-edit-menu {
+  background-color: #343a40 !important;
+  border-color: #343a40 !important;
+}
+
+.user-edit-menu:focus {
+  box-shadow: none !important;
+}
+
+.user-edit-menu.dropdown-toggle::after {
+  content: none !important;
 }
 
 /* no search results */
@@ -411,4 +424,9 @@ input.form-group {
 .new-hot-nav .nav-link:hover {
   color: white;
   border-bottom: 2px solid white;
+}
+
+/* post card edit delete button*/
+.post-edit-delete-button {
+  font-size: 0.75rem !important;
 }

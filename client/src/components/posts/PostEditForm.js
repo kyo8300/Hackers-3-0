@@ -6,7 +6,7 @@ import Select from "react-select";
 import { Redirect } from "react-router-dom";
 
 import { getCommunities } from "../../actions/community";
-import { addPost } from "../../actions/post";
+import { updatePost, getPost } from "../../actions/post";
 import Loading from "../layouts/Loading";
 
 //Markdown
@@ -21,15 +21,19 @@ marked.setOptions({
   },
 });
 
-const PostForm = ({
-  addPost,
+const PostEditForm = ({
+  updatePost,
   getCommunities,
+  getPost,
   community: { communities, loading },
   auth,
+  post,
+  match,
 }) => {
   useEffect(() => {
     getCommunities();
-  }, [getCommunities]);
+    getPost(match.params.id);
+  }, [getPost, getCommunities]);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -38,6 +42,14 @@ const PostForm = ({
   });
 
   const { title, text, mycommunity } = formData;
+
+  useEffect(() => {
+    setFormData({
+      title: post.post !== null ? post.post.title : "",
+      text: post.post !== null ? post.post.text : "",
+      mycommunity: post.post !== null ? post.post.community._id : "",
+    });
+  }, [post]);
 
   const options = communities.map((community) => ({
     label: community.name,
@@ -53,23 +65,31 @@ const PostForm = ({
 
   const onSubmit = (e) => {
     e.preventDefault();
-    addPost({ title, text, mycommunity });
+    updatePost(match.params.id, { title, text, mycommunity });
     setFormData({ title: "", text: "", mycommunity: "" });
   };
 
   if (!auth.isAuthenticated && !auth.loading) return <Redirect to="/" />;
 
-  return loading || communities === null ? (
+  return loading || communities === null || post.loading ? (
     <Loading />
   ) : (
     <Fragment>
-      <Form onSubmit={(e) => onSubmit(e)}>
+      <Form
+        onSubmit={(e) => {
+          onSubmit(e);
+        }}
+      >
         <Form.Group className="mt-4 h5">
           <Form.Label>Community</Form.Label>
           <Select
             options={options}
             name="mycommunity"
             onChange={(e) => onChangeSelect(e, "mycommunity")}
+            defaultValue={{
+              label: post.post.community.name,
+              value: post.post.community._id,
+            }}
             className="text-dark icon"
             placeholder="&#xf002; Search communities..."
             required
@@ -104,7 +124,7 @@ const PostForm = ({
             </Form.Group>
           </Col>
           <Col style={{ width: "50%" }}>
-            <label class="h5">Preview</label>
+            <label className="h5">Preview</label>
             <div
               dangerouslySetInnerHTML={{ __html: marked(text) }}
               className="border p-2 overflow-auto bg-transparent text-break"
@@ -118,22 +138,29 @@ const PostForm = ({
           className="mx-auto d-block mt-2 mb-4"
           size="lg"
         >
-          Submit
+          Update
         </Button>
       </Form>
     </Fragment>
   );
 };
 
-PostForm.propTypes = {
-  addPost: PropTypes.func.isRequired,
+PostEditForm.propTypes = {
+  updatePost: PropTypes.func.isRequired,
   getCommunities: PropTypes.func.isRequired,
+  getPost: PropTypes.func.isRequired,
   community: PropTypes.object.isRequired,
+  post: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   community: state.community,
   auth: state.auth,
+  post: state.post,
 });
 
-export default connect(mapStateToProps, { addPost, getCommunities })(PostForm);
+export default connect(mapStateToProps, {
+  updatePost,
+  getCommunities,
+  getPost,
+})(PostEditForm);
