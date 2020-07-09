@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 import {
   GET_COMMUNITIES,
   JOIN_COMMUNITY,
@@ -6,15 +6,33 @@ import {
   GET_COMMUNITY,
   INIT_COMMUNITY,
   GET_SUGGESTIONS,
-} from './types';
+  GET_COMMUNITY_LANKING,
+} from "./types";
 
 //Get communities
 export const getCommunities = () => async (dispatch) => {
   try {
-    const res = await axios.get('/api/communities/');
+    const res = await axios.get("/api/communities/");
 
     dispatch({
       type: GET_COMMUNITIES,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: COMMUNITY_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+//Get community lanking list
+export const getCommunityLanking = () => async (dispatch) => {
+  try {
+    const res = await axios.get("/api/communities/lanking");
+
+    dispatch({
+      type: GET_COMMUNITY_LANKING,
       payload: res.data,
     });
   } catch (err) {

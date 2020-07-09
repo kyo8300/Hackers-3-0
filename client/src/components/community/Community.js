@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Card, Row, Col, Image, Button } from "react-bootstrap";
 
 import Loading from "../layouts/Loading";
+import CommunityLanking from "./CommunityLanking";
 import {
   getCommunity,
   initCommunity,
@@ -94,9 +95,7 @@ const Community = ({
         )}
       </div>
       <Row>
-        <Col lg={2}>
-          <Card border="primary">Space</Card>
-        </Col>
+        <Col lg={2}></Col>
         <Col lg={6}>
           <CommunityPosts
             posts={community.posts}
@@ -105,8 +104,8 @@ const Community = ({
             communityid={match.params.id}
           />
         </Col>
-        <Col lg={4}>
-          <Card border="primary">Tag</Card>
+        <Col lg={4} className="my-3">
+          <CommunityLanking />
         </Col>
       </Row>
     </Fragment>

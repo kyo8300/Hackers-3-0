@@ -430,3 +430,14 @@ input.form-group {
 .post-edit-delete-button {
   font-size: 0.75rem !important;
 }
+
+/* community lanking page */
+.community-lank {
+  color: white !important;
+  background-color: #262a2e !important;
+}
+
+.community-lank a {
+  text-decoration: none !important;
+  color: white !important;
+}

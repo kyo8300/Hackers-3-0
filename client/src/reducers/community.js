@@ -6,7 +6,8 @@ import {
   COMMUNITY_ERROR,
   INIT_COMMUNITY,
   LIKEorDISLIKE,
-} from '../actions/types';
+  GET_COMMUNITY_LANKING,
+} from "../actions/types";
 
 const initialState = {
   communities: [],
@@ -23,6 +24,7 @@ export default function (state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
     case GET_COMMUNITIES:
+    case GET_COMMUNITY_LANKING:
       return {
         ...state,
         communities: payload,

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Card, Row, Col, Nav } from "react-bootstrap";
 import BlackLoading from "../layouts/blackLoading";
 import { Redirect } from "react-router-dom";
+import CommunityLanking from "../community/CommunityLanking";
 
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -201,8 +202,8 @@ const FollowingPosts = ({
           ))}
         </InfiniteScroll>
       </Col>
-      <Col lg={4}>
-        <Card border="primary">Tag</Card>
+      <Col lg={4} className="my-5">
+        <CommunityLanking />
       </Col>
     </Row>
   );
