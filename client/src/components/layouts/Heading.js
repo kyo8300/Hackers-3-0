@@ -11,7 +11,7 @@ import BlackLoading from "../layouts/blackLoading";
 import { useState } from "react";
 
 const Heading = ({ auth: { isAuthenticated, loading, user }, logout }) => {
-  const [setFormSearch] = useState("");
+  const [formSearch, setFormSearch] = useState("");
 
   const onChange = (e) => {
     setFormSearch(e.target.value);

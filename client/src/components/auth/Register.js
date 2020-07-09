@@ -1,27 +1,27 @@
-import React, { Fragment, useState } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { register } from '../../actions/auth';
-import { setAlert } from '../../actions/alert';
-import { Redirect } from 'react-router-dom';
+import React, { Fragment, useState } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { register } from "../../actions/auth";
+import { setAlert } from "../../actions/alert";
+import { Redirect } from "react-router-dom";
 
 const Register = ({ register, setAlert, isAuthenticated }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    password2: ''
+    name: "",
+    email: "",
+    password: "",
+    password2: "",
   });
 
   const { name, email, password, password2 } = formData;
 
-  const onChange = e =>
+  const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = e => {
+  const onSubmit = (e) => {
     e.preventDefault();
     if (password !== password2) {
-      setAlert('Passwords do not match', 'danger');
+      setAlert("Passwords do not match", "danger");
     } else {
       register({ name, email, password });
     }
@@ -31,7 +31,10 @@ const Register = ({ register, setAlert, isAuthenticated }) => {
 
   return (
     <Fragment>
-      <form className="login-form form-group mt-5" onSubmit={e => onSubmit(e)}>
+      <form
+        className="login-form form-group mt-5"
+        onSubmit={(e) => onSubmit(e)}
+      >
         <p className="login-text">
           <span className="fa-stack fa-lg">
             <i className="fa fa-circle fa-stack-2x"></i>
@@ -41,40 +44,40 @@ const Register = ({ register, setAlert, isAuthenticated }) => {
         <input
           type="text"
           className="login-username"
-          autofocus="true"
-          required="true"
+          autoFocus={true}
+          required={true}
           placeholder="Name"
           name="name"
           value={name}
-          onChange={e => onChange(e)}
+          onChange={(e) => onChange(e)}
         />
         <input
           type="email"
           className="login-username"
-          autofocus="true"
-          required="true"
+          autoFocus={true}
+          required={true}
           placeholder="Email"
           name="email"
           value={email}
-          onChange={e => onChange(e)}
+          onChange={(e) => onChange(e)}
         />
         <input
           type="password"
           className="login-password"
-          required="true"
+          required={true}
           placeholder="Password"
           name="password"
           value={password}
-          onChange={e => onChange(e)}
+          onChange={(e) => onChange(e)}
         />
         <input
           type="password"
           className="login-password"
-          required="true"
+          required={true}
           placeholder="Confirm Password"
           name="password2"
           value={password2}
-          onChange={e => onChange(e)}
+          onChange={(e) => onChange(e)}
         />
         <input
           type="submit"
@@ -87,7 +90,7 @@ const Register = ({ register, setAlert, isAuthenticated }) => {
         forgot password?
       </a>
       <div className="underlay-photo"></div>
-      <div className="underlay-black"></div>{' '}
+      <div className="underlay-black"></div>{" "}
     </Fragment>
   );
 };
@@ -95,11 +98,11 @@ const Register = ({ register, setAlert, isAuthenticated }) => {
 Register.propTypes = {
   register: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool
+  isAuthenticated: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default connect(mapStateToProps, { register, setAlert })(Register);

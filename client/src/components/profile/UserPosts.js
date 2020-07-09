@@ -44,7 +44,7 @@ const UserPosts = ({
                   getProfile(userid, 0, 2);
                 }}
               >
-                <i class="fab fa-hotjar" /> Top{" "}
+                <i className="fab fa-hotjar" /> Top{" "}
               </Dropdown.Item>{" "}
               <Dropdown.Item
                 eventKey="1"
@@ -53,7 +53,7 @@ const UserPosts = ({
                   getProfile(userid, 0, 1);
                 }}
               >
-                <i class="fas fa-sun" /> New{" "}
+                <i className="fas fa-sun" /> New{" "}
               </Dropdown.Item>{" "}
             </DropdownType>{" "}
           </>
@@ -73,6 +73,7 @@ const UserPosts = ({
             style={{
               width: "80%",
             }}
+            key={post._id}
             className="my-2 text-left mx-auto"
           >
             <Card.Header>
@@ -92,7 +93,8 @@ const UserPosts = ({
                     className="mr-1"
                     width="20px"
                     height="20px"
-                    fluid
+                    alt="community-avatar"
+                    fluid="true"
                   />{" "}
                   {post.post.community.name}{" "}
                 </Link>{" "}
@@ -106,7 +108,7 @@ const UserPosts = ({
                       id="dropdown-basic"
                       className="user-edit-menu"
                     >
-                      <i class="fas fa-ellipsis-v" />
+                      <i className="fas fa-ellipsis-v" />
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
@@ -151,8 +153,8 @@ const UserPosts = ({
 };
 
 UserPosts.propTypes = {
-  posts: PropTypes.object.isRequired,
-  userid: PropTypes.number.isRequired,
+  posts: PropTypes.array.isRequired,
+  userid: PropTypes.string.isRequired,
   getProfile: PropTypes.func.isRequired,
   initProfile: PropTypes.func.isRequired,
   deletePost: PropTypes.func.isRequired,

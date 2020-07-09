@@ -1,10 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import Moment from 'react-moment';
-import { addLikeComment, removeLikeComment } from '../../actions/post';
-import { showModal } from '../../actions/modal';
+import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import Moment from "react-moment";
+import { addLikeComment, removeLikeComment } from "../../actions/post";
+import { showModal } from "../../actions/modal";
 
 const CommentItem = ({
   addLikeComment,
@@ -12,7 +11,7 @@ const CommentItem = ({
   showModal,
   postId,
   comment: { _id, text, name, user, date, commentlikes },
-  auth
+  auth,
 }) => {
   const authCheck1 = (postId, commentId) => {
     if (!auth.isAuthenticated) {
@@ -41,20 +40,20 @@ const CommentItem = ({
           class="like-comment-btn mt-1"
           onClick={() => authCheck1(postId, _id)}
         >
-          <i class="fas fa-thumbs-up" />{' '}
+          <i class="fas fa-thumbs-up" />{" "}
         </button>
         <span>
           {commentlikes.length > 0 ? (
             <span class="comment-num">{commentlikes.length}</span>
           ) : (
-            ' '
+            " "
           )}
         </span>
         <button
           class="like-comment-btn mt-1"
           onClick={() => authCheck2(postId, _id)}
         >
-          <i class="fas fa-thumbs-down" />{' '}
+          <i class="fas fa-thumbs-down" />{" "}
         </button>
       </div>
     </div>
@@ -66,15 +65,15 @@ CommentItem.propTypes = {
   showModal: PropTypes.func.isRequired,
   postId: PropTypes.string.isRequired,
   comment: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-  auth: state.auth
+const mapStateToProps = (state) => ({
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, {
   addLikeComment,
   removeLikeComment,
-  showModal
+  showModal,
 })(CommentItem);

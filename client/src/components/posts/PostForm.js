@@ -104,7 +104,7 @@ const PostForm = ({
             </Form.Group>
           </Col>
           <Col style={{ width: "50%" }}>
-            <label class="h5">Preview</label>
+            <label className="h5">Preview</label>
             <div
               dangerouslySetInnerHTML={{ __html: marked(text) }}
               className="border p-2 overflow-auto bg-transparent text-break"

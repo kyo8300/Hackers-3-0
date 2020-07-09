@@ -1,9 +1,9 @@
-import React, { Fragment, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
-import { getComments, initProfile } from '../../actions/profile';
+import { getComments, initProfile } from "../../actions/profile";
 
 import {
   Card,
@@ -11,13 +11,13 @@ import {
   ButtonGroup,
   Dropdown,
   Nav,
-} from 'react-bootstrap';
-import Moment from 'react-moment';
-import Loading from '../layouts/Loading';
+} from "react-bootstrap";
+import Moment from "react-moment";
+import Loading from "../layouts/Loading";
 
-import BlackLoading from '../layouts/blackLoading';
+import BlackLoading from "../layouts/blackLoading";
 //無限スクロール
-import InfiniteScroll from 'react-infinite-scroll-component';
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const UserComments = ({
   getComments,
@@ -27,7 +27,7 @@ const UserComments = ({
 }) => {
   useEffect(() => {
     getComments(match.params.id, 0, 1);
-  }, [getComments]);
+  }, [getComments, match.params.id]);
 
   return loading || profile == null ? (
     <Loading />
@@ -70,7 +70,7 @@ const UserComments = ({
           </Nav.Item>
         </Nav>
         <div className="mb-3">
-          {' '}
+          {" "}
           {[DropdownButton].map((DropdownType, idx) => (
             <>
               <DropdownType
@@ -88,8 +88,8 @@ const UserComments = ({
                     getComments(match.params.id, 0, 1);
                   }}
                 >
-                  <i class="fas fa-sun" /> New{' '}
-                </Dropdown.Item>{' '}
+                  <i class="fas fa-sun" /> New{" "}
+                </Dropdown.Item>{" "}
                 <Dropdown.Item
                   eventKey="2"
                   onClick={() => {
@@ -97,12 +97,12 @@ const UserComments = ({
                     getComments(match.params.id, 0, 2);
                   }}
                 >
-                  <i class="fas fa-sort-amount-down" /> Old{' '}
-                </Dropdown.Item>{' '}
-              </DropdownType>{' '}
+                  <i class="fas fa-sort-amount-down" /> Old{" "}
+                </Dropdown.Item>{" "}
+              </DropdownType>{" "}
             </>
-          ))}{' '}
-        </div>{' '}
+          ))}{" "}
+        </div>{" "}
         <InfiniteScroll
           dataLength={profile.comments.length}
           next={() => getComments(match.params.id, skip, sort)}
@@ -114,26 +114,27 @@ const UserComments = ({
           {profile.comments.map((comment) => (
             <Card
               bg="dark"
-              style={{ width: '80%' }}
+              style={{ width: "80%" }}
               className="my-2 text-left mx-auto"
             >
               <Card.Header>
                 <Link
                   to={`/community/${comment.post.community._id}`}
                   style={{
-                    textDecoration: 'none',
+                    textDecoration: "none",
                   }}
                   className="text-white"
                 >
                   <img
                     src={`data:image/png;base64,${Buffer.from(
                       comment.post.community.avatar.data
-                    ).toString('base64')}`}
+                    ).toString("base64")}`}
                     className="mr-1"
                     width="20px"
                     height="20px"
+                    alt="community-avatar"
                     fluid
-                  />{' '}
+                  />{" "}
                   {comment.post.community.name}
                 </Link>
               </Card.Header>
@@ -144,7 +145,7 @@ const UserComments = ({
                   </div>
                   <Link
                     to={`/posts/${comment.post._id}`}
-                    style={{ textDecorationColor: 'white' }}
+                    style={{ textDecorationColor: "white" }}
                   >
                     <div className="profile-comment-post-title mt-2">
                       {comment.post.title}

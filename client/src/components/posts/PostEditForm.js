@@ -33,7 +33,7 @@ const PostEditForm = ({
   useEffect(() => {
     getCommunities();
     getPost(match.params.id);
-  }, [getPost, getCommunities]);
+  }, [getPost, getCommunities, match.params.id]);
 
   const [formData, setFormData] = useState({
     title: "",

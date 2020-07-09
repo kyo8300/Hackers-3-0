@@ -6,7 +6,7 @@ import CommentForm from "../post/CommentForm";
 import CommentItem from "../post/CommentItem";
 import Moment from "react-moment";
 import { Card, Button } from "react-bootstrap";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 //Markdown
 import marked from "marked";
@@ -36,7 +36,7 @@ const Post = ({
 }) => {
   useEffect(() => {
     getPost(match.params.id);
-  }, [getPost]);
+  }, [getPost, match.params.id]);
 
   const authCheck1 = (id) => {
     if (!auth.isAuthenticated) {
@@ -62,8 +62,8 @@ const Post = ({
     <Fragment>
       <Card bg="dark" text="white" className="mb-2">
         <Card.Header>
-          <div class="d-inline-block">
-            <div class="post-info">
+          <div className="d-inline-block">
+            <div className="post-info">
               <img
                 src={`data:image/png;base64,${Buffer.from(
                   post.community.avatar.data
@@ -71,11 +71,12 @@ const Post = ({
                 className="mr-1"
                 width="30px"
                 height="30px"
-                fluid
+                alt="community-avatar"
+                fluid="true"
               />{" "}
               {post.community.name}
             </div>
-            <div class="user-profile mt-2">
+            <div className="user-profile mt-2">
               posted by{" "}
               <Link
                 to={`/profile/${post.user}`}
@@ -122,31 +123,31 @@ const Post = ({
           <div className="float-right d-inline">
             <button
               onClick={() => authCheck1(post._id)}
-              class="like-btn d-block"
+              className="like-btn d-block"
             >
               {/*  Check user is null or not first, if not, check that user liked a post or not. */}
               {auth.user === null ? (
-                <i class="fas fa-arrow-alt-circle-up arrow-size" />
+                <i className="fas fa-arrow-alt-circle-up arrow-size" />
               ) : post.likes.filter(
                   (like) => like.user.toString() === auth.user._id
                 ).length > 0 ? (
-                <i class="fas fa-arrow-alt-circle-up arrow-size mm" />
+                <i className="fas fa-arrow-alt-circle-up arrow-size mm" />
               ) : (
-                <i class="fas fa-arrow-alt-circle-up arrow-size" />
+                <i className="fas fa-arrow-alt-circle-up arrow-size" />
               )}
             </button>
-            <span class="d-block">
+            <span className="d-block">
               {post.likes.length > 0 ? (
-                <span class="num-size">{post.likes.length}</span>
+                <span className="num-size">{post.likes.length}</span>
               ) : (
-                <i class="fas fa-circle my-2 round-size ml-2" />
+                <i className="fas fa-circle my-2 round-size ml-2" />
               )}
             </span>
             <button
               onClick={() => authCheck2(post._id)}
-              class="d-block like-btn mt-1"
+              className="d-block like-btn mt-1"
             >
-              <i class="fas fa-arrow-alt-circle-down arrow-size" />{" "}
+              <i className="fas fa-arrow-alt-circle-down arrow-size" />{" "}
             </button>
           </div>
         </Card.Header>

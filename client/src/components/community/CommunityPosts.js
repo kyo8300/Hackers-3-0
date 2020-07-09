@@ -1,16 +1,16 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Card } from 'react-bootstrap';
+import React, { Fragment } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { Card } from "react-bootstrap";
 
-import { addLike, removeLike } from '../../actions/post';
-import { showModal } from '../../actions/modal';
-import { getCommunity } from '../../actions/community';
-import BlackLoading from '../layouts/blackLoading';
+import { addLike, removeLike } from "../../actions/post";
+import { showModal } from "../../actions/modal";
+import { getCommunity } from "../../actions/community";
+import BlackLoading from "../layouts/blackLoading";
 
 //無限スクロール
-import InfiniteScroll from 'react-infinite-scroll-component';
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const CommunityPosts = ({
   addLike,
@@ -50,15 +50,15 @@ const CommunityPosts = ({
         className="mt-3"
       >
         {posts.map((post) => (
-          <Card bg="dark" text="white" className="mb-2">
+          <Card bg="dark" text="white" className="mb-2" key={post._id}>
             <Card.Header>
-              <div class="d-inline user-profile">
-                posted by{' '}
+              <div className="d-inline user-profile">
+                posted by{" "}
                 <Link
                   to={`/profile/${post.post.user}`}
                   style={{
-                    textDecorationColor: 'white',
-                    color: 'rgba(255, 255, 255, 0.5)',
+                    textDecorationColor: "white",
+                    color: "rgba(255, 255, 255, 0.5)",
                   }}
                 >
                   {post.post.name}
@@ -68,40 +68,40 @@ const CommunityPosts = ({
             <Card.Body>
               <Link
                 to={`/posts/${post.post._id}`}
-                style={{ textDecorationColor: 'white' }}
+                style={{ textDecorationColor: "white" }}
               >
                 <Card.Title className="text-white d-inline">
                   {post.post.title}
                 </Card.Title>
               </Link>
-              <div class="d-inline float-right">
+              <div className="d-inline float-right">
                 <button
                   onClick={() => authCheck1(post.post._id)}
-                  class="like-btn d-block"
+                  className="like-btn d-block"
                 >
                   {/*  Check user is null or not first, if not, check that user liked a post or not. */}
                   {user === null ? (
-                    <i class="fas fa-arrow-alt-circle-up arrow-size" />
+                    <i className="fas fa-arrow-alt-circle-up arrow-size" />
                   ) : post.post.likes.filter(
                       (like) => like.user.toString() === user._id
                     ).length > 0 ? (
-                    <i class="fas fa-arrow-alt-circle-up arrow-size mm" />
+                    <i className="fas fa-arrow-alt-circle-up arrow-size mm" />
                   ) : (
-                    <i class="fas fa-arrow-alt-circle-up arrow-size" />
+                    <i className="fas fa-arrow-alt-circle-up arrow-size" />
                   )}
                 </button>
-                <span class="d-block">
+                <span className="d-block">
                   {post.post.likes.length > 0 ? (
-                    <span class="num-size">{post.post.likes.length}</span>
+                    <span className="num-size">{post.post.likes.length}</span>
                   ) : (
-                    <i class="fas fa-circle my-2 round-size ml-2" />
+                    <i className="fas fa-circle my-2 round-size ml-2" />
                   )}
                 </span>
                 <button
                   onClick={() => authCheck2(post.post._id)}
-                  class="d-block like-btn mt-1"
+                  className="d-block like-btn mt-1"
                 >
-                  <i class="fas fa-arrow-alt-circle-down arrow-size" />{' '}
+                  <i className="fas fa-arrow-alt-circle-down arrow-size" />{" "}
                 </button>
               </div>
             </Card.Body>

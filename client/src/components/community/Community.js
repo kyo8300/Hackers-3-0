@@ -1,18 +1,18 @@
-import React, { useEffect, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Card, Row, Col, Image, Button } from 'react-bootstrap';
+import React, { useEffect, Fragment } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Card, Row, Col, Image, Button } from "react-bootstrap";
 
-import Loading from '../layouts/Loading';
+import Loading from "../layouts/Loading";
 import {
   getCommunity,
   initCommunity,
   joinCommunity,
   leaveCommunity,
-} from '../../actions/community';
-import { showModal } from '../../actions/modal';
+} from "../../actions/community";
+import { showModal } from "../../actions/modal";
 
-import CommunityPosts from './CommunityPosts';
+import CommunityPosts from "./CommunityPosts";
 
 const Community = ({
   getCommunity,
@@ -27,7 +27,7 @@ const Community = ({
   useEffect(() => {
     initCommunity();
     getCommunity(match.params.id);
-  }, [getCommunity]);
+  }, [initCommunity, getCommunity, match.params.id]);
 
   const authCheck1 = (id) => {
     if (!isAuthenticated) {
@@ -53,7 +53,7 @@ const Community = ({
         <Image
           src={`data:image/png;base64,${Buffer.from(
             community.avatar.data
-          ).toString('base64')}`}
+          ).toString("base64")}`}
           className="d-inline community-header-img community-img"
           width="60px"
           height="60px"

@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import Loading from '../layouts/Loading';
-import { Card, Button, Form } from 'react-bootstrap';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import Loading from "../layouts/Loading";
+import { Card, Button } from "react-bootstrap";
 
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-import { showModal } from '../../actions/modal';
+import { showModal } from "../../actions/modal";
 import {
   getCommunities,
   joinCommunity,
   leaveCommunity,
   getSuggestions,
-} from '../../actions/community';
+} from "../../actions/community";
 
 //Autosuggest
-import Autosuggest from 'react-autosuggest';
+import Autosuggest from "react-autosuggest";
 
 const Communities = ({
   getCommunities,
@@ -31,7 +31,7 @@ const Communities = ({
   }, [getCommunities]);
 
   //Auto suggestion
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
 
   const [suggestions, setSuggestions] = useState([]);
 
@@ -48,11 +48,12 @@ const Communities = ({
       <img
         src={`data:image/png;base64,${Buffer.from(
           suggestion.avatar.data
-        ).toString('base64')}`}
+        ).toString("base64")}`}
         className="community-img d-inline mr-2"
         width="20px"
         height="20px"
-        fluid
+        alt="community-avatar"
+        fluid="true"
       />
       <div className="d-inline text-white suggestion-name">
         {suggestion.name}
@@ -72,10 +73,10 @@ const Communities = ({
   };
 
   const inputProps = {
-    placeholder: 'Search community...',
+    placeholder: "Search community...",
     value,
     onChange: onChange,
-    className: 'form-group',
+    className: "form-group",
   };
 
   const authCheck1 = (id) => {
@@ -128,23 +129,24 @@ const Communities = ({
               <img
                 src={`data:image/png;base64,${Buffer.from(
                   community.avatar.data
-                ).toString('base64')}`}
+                ).toString("base64")}`}
                 className="community-img d-inline"
                 width="50px"
                 height="50px"
-                fluid
+                alt="community-avatar"
+                fluid="true"
               />
               <div className="d-inline-block mr-2">
                 <Link
                   to={`/community/${community._id}`}
-                  style={{ textDecorationColor: 'white' }}
+                  style={{ textDecorationColor: "white" }}
                 >
                   <Card.Title className=" ml-3 mb-1 text-white">
                     {community.name}
                   </Card.Title>
                 </Link>
                 <Card.Text className="ml-3">
-                  {community.followers.length} members {'・'}{' '}
+                  {community.followers.length} members {"・"}{" "}
                   {community.posts.length} posts
                 </Card.Text>
               </div>
