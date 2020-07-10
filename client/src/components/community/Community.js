@@ -1,7 +1,7 @@
 import React, { useEffect, Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Card, Row, Col, Image, Button } from "react-bootstrap";
+import { Row, Col, Image, Button } from "react-bootstrap";
 
 import Loading from "../layouts/Loading";
 import CommunityLanking from "./CommunityLanking";

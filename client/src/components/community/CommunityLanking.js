@@ -24,7 +24,11 @@ const CommunityLanking = ({
       <h5 className="text-center mb-3">Most popular communities</h5>
       <ListGroup>
         {communities.map((community) => (
-          <ListGroup.Item variant="dark" className="community-lank">
+          <ListGroup.Item
+            variant="dark"
+            className="community-lank"
+            key={community._id}
+          >
             <h5 className="d-inline font-weight-bold mr-3">{rank++}</h5>
             <Link className="d-inline" to={`/community/${community._id}`}>
               {" "}

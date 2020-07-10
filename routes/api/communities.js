@@ -9,7 +9,8 @@ const Post = require("../../models/Post");
 const User = require("../../models/User");
 const Community = require("../../models/Community");
 
-const jsimg = "../html.png";
+const jsimg =
+  "C:/Users/kamet/OneDrive/Desktop/My MERN stack/communityimg/swift.png";
 
 // @route    POST api/communities
 // @desc     Get communities
