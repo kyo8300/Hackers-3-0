@@ -9,8 +9,8 @@ const Post = require("../../models/Post");
 const User = require("../../models/User");
 const Community = require("../../models/Community");
 
-const jsimg =
-  "C:/Users/kamet/OneDrive/Desktop/My MERN stack/communityimg/swift.png";
+// const jsimg =
+//   "C:/Users/kamet/OneDrive/Desktop/My MERN stack/communityimg/swift.png";
 
 // @route    POST api/communities
 // @desc     Get communities
@@ -94,33 +94,33 @@ router.get("/:id", async (req, res) => {
 // @route    POST api/communities/create
 // @desc     Create a community
 // @access   Private
-router.post(
-  "/create",
-  [auth, [check("name", "Name is required").not().isEmpty()]],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+// router.post(
+//   "/create",
+//   [auth, [check("name", "Name is required").not().isEmpty()]],
+//   async (req, res) => {
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       return res.status(400).json({ errors: errors.array() });
+//     }
 
-    try {
-      const newCommunity = new Community({
-        name: req.body.name,
-        avatar: {
-          data: fs.readFileSync(jsimg),
-          contentType: "img/png",
-        },
-      });
+//     try {
+//       const newCommunity = new Community({
+//         name: req.body.name,
+//         avatar: {
+//           data: fs.readFileSync(jsimg),
+//           contentType: "img/png",
+//         },
+//       });
 
-      const community = await newCommunity.save();
+//       const community = await newCommunity.save();
 
-      res.json(community);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server Error");
-    }
-  }
-);
+//       res.json(community);
+//     } catch (err) {
+//       console.error(err.message);
+//       res.status(500).send("Server Error");
+//     }
+//   }
+// );
 
 // @route    api/communities/follow/:id
 // @desc     Follow a community
