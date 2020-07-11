@@ -27,11 +27,11 @@ The Knowledge community site for software developers.
 
 ## Used techniques
 - Front end
-	- Javascript
+  - Javascript
   - React
   - React hooks
   - Redux
-	- Fontawesome
+  - Fontawesome
   - Bootstrap
 - Back end
   - Nodejs
@@ -39,6 +39,6 @@ The Knowledge community site for software developers.
   - passport
   - jwt
 - DB
-	- MongoDB
+  - MongoDB
 - Production environment
 	- Heroku
