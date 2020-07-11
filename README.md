@@ -1,17 +1,14 @@
-#Hackers-3-0
----
+# Hackers-3-0
 [App Link](https://obscure-sands-44528.herokuapp.com/)   
 If you want to login as a test user, please...     
 Email: test@example.com   
 Password: 123456
 Or you can create new user.
 
-##Overview
----
+## Overview
 The Knowledge community site for software developers.  
 
-##Main functions
----
+# #Main functions
 - CRUD post.
 - Comment on a post.
 - Search post.
@@ -28,8 +25,7 @@ The Knowledge community site for software developers.
 - Join & leave community.
 - Commuinty Lankings.
 
-##Used techniques
----
+## Used techniques
 - Front end
 	- Javascript
   - React
