@@ -18,6 +18,8 @@ app.use("/api/posts", require("./routes/api/posts"));
 app.use("/api/communities", require("./routes/api/communities"));
 app.use("/api/profiles", require("./routes/api/profiles"));
 
+console.log(process.env.NODE_ENV);
+
 // Serve static assets in production
 if (process.env.NODE_ENV === "production") {
   // Set static folder

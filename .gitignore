@@ -1,5 +1,5 @@
 node_modules/
 config/default.json
 config/mockdata.js
-config/production.json
+# config/production.json
 communityimg
