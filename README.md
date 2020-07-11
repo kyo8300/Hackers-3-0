@@ -8,7 +8,7 @@ Or you can create new user.
 ## Overview
 The Knowledge community site for software developers.  
 
-# #Main functions
+## Main functions
 - CRUD post.
 - Comment on a post.
 - Search post.
